@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>기프티콘 저장소 : 회원가입</title>
+    <link rel="stylesheet" type="text/css" href="css/basic.css" th:href="@{/css/join.css}">
+</head>
+<body>
+<div id="wrap">
+
+    <!-- header -->
+    <div id="header" class="join_membership" role="banner">
+        <h1><a th:href="@{/}">GiftHub<span class="blind"></span></a></h1>
+    </div>
+    <!-- // header -->
+
+    <!-- container -->
+    <div id="container" role="main">
+        <div id="content">
+            <!-- tg-text=title -->
+            <div class="join_content">
+                <form action="index.html" th:action th:object="${memberDto}" method="POST">
+                    <!-- 아이디, 비밀번호 입력 -->
+                    <div class="row_group">
+                        <div class="join_row">
+                            <h3 class="join_title"><label for="userId">아이디</label></h3>
+                            <span class="ps_box int_id">
+							<input type="text" id="userId" th:field="*{userId}" class="int" title="ID" maxlength="20">
+                            </span>
+                            <p class="field-error" th:errors="*{userId}">아이디 오류</p>
+                        </div>
+
+                        <div class="join_row">
+                            <h3 class="join_title"><label for="password">비밀번호</label></h3>
+                            <span class="ps_box int_pass" id="pswd1Img">
+							<input type="password" id="password" th:field="*{password}" class="int" title="비밀번호 입력"
+                                   aria-describedby="pswd1Msg" maxlength="20">
+                            <span class="lbl"><span id="pswd1Span" class="step_txt"></span></span>
+						</span>
+
+                            <p class="field-error" th:errors="*{password}">비밀번호 오류</p>
+
+                            <h3 class="join_title"><label for="passwordValidation">비밀번호 재확인</label></h3>
+                            <span class="ps_box int_pass_check" id="pswd2Img">
+							<input type="password" id="passwordValidation" th:field="*{passwordValidation}" class="int" title="비밀번호 재확인 입력"
+                                   aria-describedby="pswd2Blind" maxlength="20">
+							<span id="pswd2Blind" class="wa_blind">설정하려는 비밀번호가 맞는지 확인하기 위해 다시 입력 해주세요.</span>
+						</span>
+                            <div th:if="${#fields.hasGlobalErrors()}">
+                                <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">비밀번호 확인</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- // 아이디, 비밀번호 입력 -->
+
+                    <!-- 이름, 생년월일 입력 -->
+                    <div class="row_group">
+
+                        <!-- lang = ko_KR -->
+                        <div class="join_row">
+                            <h3 class="join_title"><label for="userName">이름</label></h3>
+                            <span class="ps_box box_right_space">
+							<input type="text" id="userName" th:field="*{userName}" title="이름" class="int" maxlength="40">
+						</span>
+                            <p class="field-error" th:errors="*{userName}">이름 오류</p>
+                        </div>
+                        <!-- lang = ko_KR -->
+
+                        <div class="join_row join_birthday">
+                            <h3 class="join_title"><label for="yyyy">생년월일</label></h3>
+                            <div class="bir_wrap">
+                                <div class="bir_yy">
+								<span class="ps_box">
+									<input type="text" id="yyyy" th:field="*{yyyy}" placeholder="년(4자)" aria-label="년(4자)" class="int"
+                                           maxlength="4">
+								</span>
+                                    <p class="field-error" th:errors="*{yyyy}">년도 오류</p>
+                                    <p class="field-error" th:errors="*{mm}">월 오류</p>
+                                    <p class="field-error" th:errors="*{dd}">일자 오류</p>
+                                </div>
+                                <div class="bir_mm">
+								<span class="ps_box">
+									<select th:field="*{mm}" class="sel" aria-label="월">
+										<option value="">월</option>
+										  	 			<option value="01">
+                                                            1
+                                                        </option>
+										  	 			<option value="02">
+                                                            2
+                                                        </option>
+										  	 			<option value="03">
+                                                            3
+                                                        </option>
+										  	 			<option value="04">
+                                                            4
+                                                        </option>
+										  	 			<option value="05">
+                                                            5
+                                                        </option>
+										  	 			<option value="06">
+                                                            6
+                                                        </option>
+										  	 			<option value="07">
+                                                            7
+                                                        </option>
+										  	 			<option value="08">
+                                                            8
+                                                        </option>
+										  	 			<option value="09">
+                                                            9
+                                                        </option>
+										  	 			<option value="10">
+                                                            10
+                                                        </option>
+										  	 			<option value="11">
+                                                            11
+                                                        </option>
+										  	 			<option value="12">
+                                                            12
+                                                        </option>
+									</select>
+								</span>
+                                </div>
+                                <div class=" bir_dd">
+								<span class="ps_box">
+									<input type="text" id="dd" th:field="*{dd}" placeholder="일" aria-label="일" class="int" maxlength="2">
+									<label for="dd" class="lbl"></label>
+								</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="join_row join_sex">
+                            <h3 class="join_title"><label for="sex">성별</label></h3>
+                            <div class="ps_box gender_code">
+                                <select id="sex" th:field="*{sex}" class="sel" aria-label="성별">
+                                    <option value="" selected>성별</option>
+                                    <option value="Male">남자</option>
+                                    <option value="Female">여자</option>
+                                    <option value="Neither">선택 안함</option>
+                                </select>
+                            </div>
+                            <p class="field-error" th:errors="*{sex}">성별 오류</p>
+                        </div>
+
+                        <div class="join_row join_email">
+                            <h3 class="join_title"><label for="mail">본인 확인 이메일<span
+                                    class="terms_choice">(선택)</span></label></h3>
+                            <span class="ps_box int_email box_right_space">
+							<input type="text" id="mail" th:field="*{mail}" placeholder="선택입력" aria-label="선택입력" class="int"
+                                   maxlength="100">
+						</span>
+                        </div>
+                        <p class="field-error" th:errors="*{mail}">메일 오류</p>
+                    </div>
+                    <!-- // 이름, 생년월일 입력 -->
+
+                    <!-- 휴대전화 번호 입력 -->
+                    <div class="join_row join_mobile" id="mobDiv">
+                        <h3 class="join_title"><label for="phoneNumber">휴대전화</label></h3>
+                        <div class="int_mobile_area">
+						<span class="ps_box int_mobile">
+							<input type="tel" id="phoneNumber" th:field="*{phoneNumber}" placeholder="전화번호 입력" aria-label="전화번호 입력"
+                                   class="int" maxlength="16">
+							<label for="phoneNumber" class="lbl"></label>
+						</span>
+                        </div>
+                        <p class="field-error" th:errors="*{phoneNumber}">전화번호 오류</p>
+                    </div>
+                    <div class="btn_area">
+                        <button type="submit" id="btnJoin" class="btn_type btn_primary"><span>가입하기</span></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- // container -->
+
+
+    <!-- footer -->
+    <div id="footer" role="contentinfo">
+    </div>
+    <!-- //footer -->
+</div>
+</body>
+</html>
