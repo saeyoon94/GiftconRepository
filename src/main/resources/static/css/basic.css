@@ -91,6 +91,12 @@ table {
     -webkit-text-size-adjust: none
 }
 
+p.field-error {
+    border-color: #dc3545;
+    color: #dc3545;
+    margin-top: 10px
+}
+
 .u_skip {
     position: absolute;
     clip: rect(0 0 0 0);
