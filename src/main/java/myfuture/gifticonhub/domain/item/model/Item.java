@@ -37,7 +37,7 @@ public class Item {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-    @Column(length = 30)
+    @Column(length = 50)
     private String itemName;
 
     @Column(length = 30)

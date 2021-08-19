@@ -17,7 +17,13 @@ public class FileServiceImpl implements FileService{
     private String fileDir;
 
     public String getFullPath(String fileName, Long loginMemberId) {
-        return fileDir + loginMemberId + "/" + fileName;
+        //경로가 없는 경우 생성하고, 완전한 경로 반환
+        String dirPath = fileDir + "/" + loginMemberId;
+        File dir = new File(dirPath);
+        if (!dir.exists()) {
+            dir.mkdir();
+        }
+        return dirPath + "/" + fileName;
     }
 
     @Override

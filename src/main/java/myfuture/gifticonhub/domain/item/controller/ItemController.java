@@ -2,20 +2,27 @@ package myfuture.gifticonhub.domain.item.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import myfuture.gifticonhub.domain.item.model.Item;
 import myfuture.gifticonhub.domain.item.model.ItemDto;
 import myfuture.gifticonhub.domain.item.model.UploadFile;
 import myfuture.gifticonhub.domain.item.service.FileService;
+import myfuture.gifticonhub.domain.item.service.ItemService;
+import myfuture.gifticonhub.domain.member.model.Member;
+import myfuture.gifticonhub.domain.member.service.MemberService;
 import myfuture.gifticonhub.global.session.Login;
 import myfuture.gifticonhub.global.session.SessionDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Controller
 @Slf4j
@@ -24,6 +31,10 @@ import java.io.IOException;
 public class ItemController {
     @Autowired
     private FileService fileService;
+    @Autowired
+    private MemberService memberService;
+    @Autowired
+    private ItemService itemService;
 
     @GetMapping
     public String item() {
@@ -37,10 +48,16 @@ public class ItemController {
     }
 
     @PostMapping(value = "/new")
-    public String addItem(@ModelAttribute ItemDto itemDto, @Login SessionDto loginSession) throws IOException {
-
+    public String addItem(@Validated @ModelAttribute ItemDto itemDto, BindingResult bindingResult,
+                          @Login SessionDto loginSession) throws IOException {
+        log.info("itemDto ={}", itemDto);
+        if (bindingResult.hasErrors()) {
+            return "item/addItem";
+        }
         UploadFile uploadFile = fileService.storeFile(itemDto.getAttachFile(), loginSession.getId());
-
-        return "item/addItem";
+        Optional<Member> member = memberService.findOne(loginSession.getId());
+        Item item = itemDto.toEntity(member.get(), uploadFile);
+        Item registerdItem = itemService.register(item);
+        return "redirect:/items";
     }
 }

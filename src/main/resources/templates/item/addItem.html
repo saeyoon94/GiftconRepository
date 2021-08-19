@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html translate="no">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charSet="utf-8"/>
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no shrink-to-fit=no"/>
     <title>기프티콘 저장소 : 기프티콘 저장</title>
-    <link rel="stylesheet" type="text/css" href="css/item.css">
+    <link rel="stylesheet" type="text/css" href="css/item.css" th:href="@{/css/item.css}">
 </head>
 <body>
 <div id="__next">
@@ -109,7 +109,7 @@
                         <style data-emotion-css="1tqyst1">.css-1tqyst1 + .css-1tqyst1{margin-top:16px;}</style>
 
                         /* */
-                        <form action="" method="post" enctype="multipart/form-data">
+                        <form action="" method="post" th:action th:object="${itemDto}" enctype="multipart/form-data">
                         <div class="css-1tqyst1">
                             <div>
                                 <style data-emotion-css="t1cgvl">
@@ -129,9 +129,10 @@
                                                 .css-1pfv6fx{width:100%;padding:0 2.4rem 0 0;border:none;text-align:left;font-size:1.6rem;color:#1a1a1a;background-color:transparent;}.css-1pfv6fx:-moz-read-only{color:#919191;}.css-1pfv6fx:read-only{color:#919191;}.css-1pfv6fx::-webkit-input-placeholder{color:#cccccc;}.css-1pfv6fx::-moz-placeholder{color:#cccccc;}.css-1pfv6fx:-ms-input-placeholder{color:#cccccc;}.css-1pfv6fx::placeholder{color:#cccccc;}
 
                                             </style>
-                                            <input type="text" placeholder="상품명을 입력해주세요." name="authInfo.name_" value=""
-                                                   autoCorrect="off" autoCapitalize="none" class="css-1pfv6fx"/></div>
-                                        <input type="hidden" name="authInfo.name" value=""/></div>
+                                            <input type="text" placeholder="상품명을 입력해주세요." th:field="*{itemName}" autoCorrect="off" autoCapitalize="none" class="css-1pfv6fx"/>
+                                            <p class="field-error" th:errors="*{itemName}">상품명 오류</p>
+                                        </div>
+
                                 </div>
                                 <style data-emotion-css="nzjuuy">
                                     .css-nzjuuy{margin-top:8px;height:20px;color:#dc0328;font-size:11px;}
@@ -160,9 +161,9 @@
                                                 .css-1pfv6fx{width:100%;padding:0 2.4rem 0 0;border:none;text-align:left;font-size:1.6rem;color:#1a1a1a;background-color:transparent;}.css-1pfv6fx:-moz-read-only{color:#919191;}.css-1pfv6fx:read-only{color:#919191;}.css-1pfv6fx::-webkit-input-placeholder{color:#cccccc;}.css-1pfv6fx::-moz-placeholder{color:#cccccc;}.css-1pfv6fx:-ms-input-placeholder{color:#cccccc;}.css-1pfv6fx::placeholder{color:#cccccc;}
 
                                             </style>
-                                            <input type="text" placeholder="교환처를 입력해주세요." name="authInfo.name_" value=""
-                                                   autoCorrect="off" autoCapitalize="none" class="css-1pfv6fx"/></div>
-                                        <input type="hidden" name="authInfo.name" value=""/></div>
+                                            <input type="text" placeholder="교환처를 입력해주세요." th:field="*{brandName}" autoCorrect="off" autoCapitalize="none" class="css-1pfv6fx"/>
+                                            <p class="field-error" th:errors="*{brandName}">교환처 오류</p>
+                                        </div>
                                 </div>
                                 <style data-emotion-css="nzjuuy">
                                     .css-nzjuuy{margin-top:8px;height:20px;color:#dc0328;font-size:11px;}
@@ -191,11 +192,11 @@
                                                 .css-1pfv6fx{width:100%;padding:0 2.4rem 0 0;border:none;text-align:left;font-size:1.6rem;color:#1a1a1a;background-color:transparent;}.css-1pfv6fx:-moz-read-only{color:#919191;}.css-1pfv6fx:read-only{color:#919191;}.css-1pfv6fx::-webkit-input-placeholder{color:#cccccc;}.css-1pfv6fx::-moz-placeholder{color:#cccccc;}.css-1pfv6fx:-ms-input-placeholder{color:#cccccc;}.css-1pfv6fx::placeholder{color:#cccccc;}
 
                                             </style>
-                                            <select class="css-1pfv6fx">
+                                            <select class="css-1pfv6fx" th:field="*{itemCategory}">
                                                 <option value="">==분류 선택==</option>
                                                 <option value="">카페</option>
                                             </select>
-                                        <input type="hidden" name="authInfo.name" value=""/></div>
+                                            <p class="field-error" th:errors="*{itemCategory}">분류 오류</p>
                                 </div>
                                 <style data-emotion-css="nzjuuy">
                                     .css-nzjuuy{margin-top:8px;height:20px;color:#dc0328;font-size:11px;}
@@ -224,9 +225,9 @@
                                                 .css-1pfv6fx{width:100%;padding:0 2.4rem 0 0;border:none;text-align:left;font-size:1.6rem;color:#1a1a1a;background-color:transparent;}.css-1pfv6fx:-moz-read-only{color:#919191;}.css-1pfv6fx:read-only{color:#919191;}.css-1pfv6fx::-webkit-input-placeholder{color:#cccccc;}.css-1pfv6fx::-moz-placeholder{color:#cccccc;}.css-1pfv6fx:-ms-input-placeholder{color:#cccccc;}.css-1pfv6fx::placeholder{color:#cccccc;}
 
                                             </style>
-                                                <input type="text" placeholder="시리얼 번호를 입력해주세요." name="authInfo.name_" value=""
-                                                       autoCorrect="off" autoCapitalize="none" class="css-1pfv6fx"/></div>
-                                            <input type="hidden" name="authInfo.name" value=""/></div>
+                                                <input type="text" placeholder="시리얼 번호를 입력해주세요." th:field="*{serialNumber}" autoCorrect="off" autoCapitalize="none" class="css-1pfv6fx"/>
+                                                <p class="field-error" th:errors="*{itemCategory}">시리얼번호 오류</p>
+                                            </div>
                                     </div>
                                     <style data-emotion-css="nzjuuy">
                                     .css-nzjuuy{margin-top:8px;height:20px;color:#dc0328;font-size:11px;}
@@ -255,8 +256,9 @@
                                                 .css-1pfv6fx{width:100%;padding:0 2.4rem 0 0;border:none;text-align:left;font-size:1.6rem;color:#1a1a1a;background-color:transparent;}.css-1pfv6fx:-moz-read-only{color:#919191;}.css-1pfv6fx:read-only{color:#919191;}.css-1pfv6fx::-webkit-input-placeholder{color:#cccccc;}.css-1pfv6fx::-moz-placeholder{color:#cccccc;}.css-1pfv6fx:-ms-input-placeholder{color:#cccccc;}.css-1pfv6fx::placeholder{color:#cccccc;}
 
                                             </style>
-                                            <input type="date" name="authInfo.name_" value="2021-10-01" class="css-1pfv6fx"/></div>
-                                        <input type="hidden" name="authInfo.name" value=""/></div>
+                                            <input type="date" th:field="*{expirationDate}" value="2021-10-01" class="css-1pfv6fx"/>
+                                            <p class="field-error" th:errors="*{expirationDate}">만기일 오류</p>
+                                        </div>
                                 </div>
                                 <style data-emotion-css="nzjuuy">
                                     .css-nzjuuy{margin-top:8px;height:20px;color:#dc0328;font-size:11px;}
@@ -285,8 +287,9 @@
                                                 .css-1pfv6fx{width:100%;padding:0 2.4rem 0 0;border:none;text-align:left;font-size:1.6rem;color:#1a1a1a;background-color:transparent;}.css-1pfv6fx:-moz-read-only{color:#919191;}.css-1pfv6fx:read-only{color:#919191;}.css-1pfv6fx::-webkit-input-placeholder{color:#cccccc;}.css-1pfv6fx::-moz-placeholder{color:#cccccc;}.css-1pfv6fx:-ms-input-placeholder{color:#cccccc;}.css-1pfv6fx::placeholder{color:#cccccc;}
 
                                             </style>
-                                            <input type="file" name="authInfo.name_" class="css-1pfv6fx"/></div>
-                                        <input type="hidden" name="authInfo.name" value=""/></div>
+                                            <input type="file" th:field="*{attachFile}" class="css-1pfv6fx"/>
+                                            <p class="field-error" th:errors="*{attachFile}">사진 오류</p>
+                                        </div>
                                 </div>
                                 <style data-emotion-css="nzjuuy">
                                     .css-nzjuuy{margin-top:8px;height:20px;color:#dc0328;font-size:11px;}

@@ -37,13 +37,13 @@ public class MemberController {
     @GetMapping(value = "/")
     public String home(@Login SessionDto loginSession, HttpServletRequest request) {
 
-        return "item/addItem";
-        /*
+        //return "item/addItem";
+
         if (loginSession == null) {
             return "redirect:/login";
         }
         return "redirect:/items";
-        */
+
 
     }
 
