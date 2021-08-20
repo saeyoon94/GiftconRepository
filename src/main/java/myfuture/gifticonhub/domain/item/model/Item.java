@@ -49,6 +49,8 @@ public class Item {
     @Column(nullable = false)
     private LocalDate expirationDate;
 
+    private Long price;
+
     @ManyToOne
     @JoinColumn(name = "PRESENTED_MEMBER_ID")
     private Member presentedBy;
@@ -67,11 +69,12 @@ public class Item {
     private UploadFile uploadFile;
 
     public Item(Member member, String itemName, String brandName, LocalDate registeredDate,
-                LocalDate expirationDate, ItemCategory itemCategory, String serialNumber, UploadFile uploadFile) {
+                LocalDate expirationDate, Long price, ItemCategory itemCategory, String serialNumber, UploadFile uploadFile) {
         this.member = member;
         this.itemName = itemName;
         this.brandName = brandName;
         this.registeredDate = registeredDate;
+        this.price = price;
         this.expirationDate = expirationDate;
         this.itemCategory = itemCategory;
         this.serialNumber = serialNumber;

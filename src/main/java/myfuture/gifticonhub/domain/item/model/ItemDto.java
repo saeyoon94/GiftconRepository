@@ -17,6 +17,9 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ItemDto {
+    /*todo :
+    이건 등록용 DTO이고, 등록폼에 price넣기. 그리고 조회용 DTO를 따로 만들어야겠다.
+     */
 
 
     private String itemName;
@@ -33,11 +36,13 @@ public class ItemDto {
 
     private String serialNumber;
 
+    private Long price;
+
     @NotNull
     private MultipartFile attachFile;
 
     public Item toEntity(Member member, UploadFile uploadFile) {
-        return new Item(member, itemName, brandName, LocalDate.now(), expirationDate, itemCategory, serialNumber, uploadFile);
+        return new Item(member, itemName, brandName, LocalDate.now(), expirationDate, price, itemCategory, serialNumber, uploadFile);
 
     }
 }

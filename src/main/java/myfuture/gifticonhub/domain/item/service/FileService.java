@@ -7,5 +7,8 @@ import java.io.IOException;
 
 public interface FileService {
 
+    public String getFullPath(String fileName, Long loginMemberId);
     public UploadFile storeFile(MultipartFile multipartFile, Long loginMemberId) throws IOException;
+
+
 }
