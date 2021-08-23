@@ -109,7 +109,7 @@
                         <style data-emotion-css="1tqyst1">.css-1tqyst1 + .css-1tqyst1{margin-top:16px;}</style>
 
                         /* */
-                        <form action="" method="post" th:action th:object="${itemDto}" enctype="multipart/form-data">
+                        <form action="" method="post" th:action th:object="${itemRegisterDto}" enctype="multipart/form-data">
                         <div class="css-1tqyst1">
                             <div>
                                 <style data-emotion-css="t1cgvl">
@@ -173,6 +173,37 @@
                             </div>
                         </div>
 
+                            <div class="css-1tqyst1">
+                                <div>
+                                    <style data-emotion-css="t1cgvl">
+                                    .css-t1cgvl{display:block;font-size:12px;color:#919191;padding:5px 0;}.css-t1cgvl:after{margin-left:2px;content:'*';font-weight:normal;color:#de2e5f;}
+
+                                </style>
+                                    <label required="" class="css-t1cgvl">가격</label>
+                                    <style data-emotion-css="1vtdfw9">
+                                    .css-1vtdfw9{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:justify;-webkit-justify-content:space-between;-ms-flex-pack:justify;justify-content:space-between;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;border-bottom:1px solid #cccccc;padding:8px 0;}.css-1vtdfw9 input:-webkit-autofill,.css-1vtdfw9 input:-webkit-autofill:hover,.css-1vtdfw9 input:-webkit-autofill:focus,.css-1vtdfw9 input:-webkit-autofill:active{-webkit-box-shadow:0 0 0 30px white inset !important;}
+
+                                </style>
+                                    <div class="css-1vtdfw9">
+                                        <div style="width:100%">
+                                            <style data-emotion-css="cssveg">.css-cssveg{position:relative;}</style>
+                                            <div class="css-cssveg">
+                                                <style data-emotion-css="1pfv6fx">
+                                                .css-1pfv6fx{width:100%;padding:0 2.4rem 0 0;border:none;text-align:left;font-size:1.6rem;color:#1a1a1a;background-color:transparent;}.css-1pfv6fx:-moz-read-only{color:#919191;}.css-1pfv6fx:read-only{color:#919191;}.css-1pfv6fx::-webkit-input-placeholder{color:#cccccc;}.css-1pfv6fx::-moz-placeholder{color:#cccccc;}.css-1pfv6fx:-ms-input-placeholder{color:#cccccc;}.css-1pfv6fx::placeholder{color:#cccccc;}
+
+                                            </style>
+                                                <input type="text" placeholder="가격을 입력해주세요." th:field="*{price}" autoCorrect="off" autoCapitalize="none" class="css-1pfv6fx"/>
+                                                <p class="field-error" th:errors="*{price}">가격 오류</p>
+                                            </div>
+                                        </div>
+                                        <style data-emotion-css="nzjuuy">
+                                    .css-nzjuuy{margin-top:8px;height:20px;color:#dc0328;font-size:11px;}
+
+                                </style>
+                                        <div class="css-nzjuuy"></div>
+                                    </div>
+                                </div>
+
                         <div class="css-1tqyst1">
                             <div>
                                 <style data-emotion-css="t1cgvl">
@@ -194,7 +225,7 @@
                                             </style>
                                             <select class="css-1pfv6fx" th:field="*{itemCategory}">
                                                 <option value="">==분류 선택==</option>
-                                                <option value="">카페</option>
+                                                <option th:each="itemCategory : ${itemCategories}" th:value="${itemCategory}" th:text="${itemCategory.value}">카페</option>
                                             </select>
                                             <p class="field-error" th:errors="*{itemCategory}">분류 오류</p>
                                 </div>

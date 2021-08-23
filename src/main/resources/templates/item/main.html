@@ -74,33 +74,40 @@
                                  class="ReactVirtualized__Grid ReactVirtualized__List" role="grid"
                                  style="box-sizing: border-box; direction: ltr; height: auto; position: relative; width: 100vw; will-change: transform; overflow: hidden auto;"
                                  tabindex="0">
-                                <div class="ReactVirtualized__Grid__innerScrollContainer" th:each="itemDto : ${itemDtos}" role="rowgroup" style="width: auto; height: 4576px; max-width: 768px; max-height: 4576px; overflow: hidden; position: relative;">
-                                    <div class="ExhibitionDetailSubGroup_mobileRow__AJGy0"
-                                         style="height: 208px; left: 0px; position: absolute; top: 0px; width: 100%;">
+                                <div class="ReactVirtualized__Grid__innerScrollContainer" role="rowgroup" style="width: auto; height: 4576px; max-width: 768px; max-height: 4576px; overflow: hidden; position: relative;">
+                                    <div class="ExhibitionDetailSubGroup_mobileRow__AJGy0" th:each="itemViewDto : ${itemViewDtos}"
+                                         th:style="|height: 208px; left: 0px; position: absolute; top: ${itemViewDtoStat.index*208}px; width: 100%;|">
                                         <div>
-                                            <div class="ExhibitionDetailDomesticLeisure_container__15r_2"><a
-                                                    href="/leisure/71371" class="LeisureListItem_container__12YuE">
+                                            <div class="ExhibitionDetailDomesticLeisure_container__15r_2">
+                                                <a href="/leisure/71371" class="LeisureListItem_container__12YuE">
                                                 <div class="ImageFallback_wrap__3VXUV LeisureListItem_image__3xYDz">
                                                     <div class="ImageFallback_body__UgBLm"
-                                                         th:style="${itemDto.attachFile}"
-                                                         style="background-image: url(&quot;https://static.leisureq.io/800/production-gajago-deal-images/c2580cc6-9e12-485c-80d0-f4aedf593ae1.jpeg&quot;);"></div>
+                                                         th:style="|background-image: url(&quot;/items/image/${itemViewDto.imageURI}&quot;);height: 30vh;|"
+                                                         style="background-image: url(&quot;https://static.leisureq.io/800/production-gajago-deal-images/c2580cc6-9e12-485c-80d0-f4aedf593ae1.jpeg&quot;);">
+                                                    </div>
                                                 </div>
                                                 <div class="LeisureListItem_body__1iNjJ">
-                                                    <p class="LeisureListItem_title__U-d8s" th:text="${itemDto.itemName}">[스타벅스]카페아메리카노 Tall</p>
+                                                    <p class="LeisureListItem_title__U-d8s" th:text="${itemViewDto.itemName}">[스타벅스]카페아메리카노 Tall</p>
                                                     <p class="LeisureListItem_desc__1HrH4"></p>
                                                     <div class="LeisureCommonBadges_container__26Y4q LeisureListItem_badges__2Ycei">
-                                                        <span class="LeisureCommonBadges_badge__3_xxA" th:text="${itemDto.itemCategory}">카페</span>
-                                                        <span class="LeisureCommonBadges_badge__3_xxA" th:text="${itemDto.brandName}">스타벅스</span>
-                                                        <span class="LeisureCommonBadges_badge__3_xxA" th:text="${itemDto.expirationDate}">2021-09-21</span>
+                                                        <span class="LeisureCommonBadges_badge__3_xxA" th:text="${itemViewDto.itemCategory.value}">카페</span>
+                                                        <span class="LeisureCommonBadges_badge__3_xxA" th:text="${itemViewDto.brandName}">스타벅스</span>
+                                                        <span class="LeisureCommonBadges_badge__3_xxA" th:text="${itemViewDto.expirationDate}">2021-09-21</span>
                                                     </div>
                                                     <div class="LeisureListItem_priceWrap__126T-">
-                                                        <div class="LeisurePriceOrigin_wrap__2ks_F"><s></s></div>
-                                                        <div class="LeisurePriceDiscount_wrap__36K-Q"><span
-                                                                class="LeisurePriceDiscount_amount__19qBa" th:text="${itemDto.price}">4,100</span><span
-                                                                class="LeisurePriceDiscount_unit__19gEJ">원</span></div>
+                                                        <div class="LeisurePriceOrigin_wrap__2ks_F">
+                                                            <s></s>
+                                                        </div>
+                                                        <div class="LeisurePriceDiscount_wrap__36K-Q">
+                                                            <span class="LeisureCommonBadges_badge__3_xxA" style="float:left;"
+                                                                  th:text="${itemViewDto.itemStatus.value}">사용 가능</span>
+                                                            <span class="LeisurePriceDiscount_amount__19qBa" th:text="${itemViewDto.price}">4,100</span>
+                                                            <span class="LeisurePriceDiscount_unit__19gEJ">원</span>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </a></div>
+                                            </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -115,10 +122,9 @@
                     </div>
                 </div>
                 <div class="ToTopButton_container__80T0O ToTopButton_containerVisible__2Wpm3 ExhibitionDetailBody_toTopButton__1_-Mt">
-                    <button class="ToTopButton_button__2Y4Fv">
-                        <div><img src="//yaimg.yanolja.com/joy/sunny/static/images/icon-arrow-less-line-2.svg" alt="">
-                        </div>
-                        <div class="ToTopButton_btnInnerText__1yDBa">맨위로</div>
+                    <button class="ToTopButton_button__2Y4Fv" onclick="location.href='/items/new'">
+                        <div><img src="https://png.pngtree.com/png-clipart/20190705/original/pngtree-vector-add-icon-png-image_4275926.jpg" alt=""
+                                  style="max-width: 100%; height: auto;"></div>
                     </button>
                 </div>
             </div>

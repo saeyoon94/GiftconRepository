@@ -33,7 +33,7 @@ public class Item {
             generator = "ITEM_SEQ_GENERATOR")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
@@ -51,16 +51,19 @@ public class Item {
 
     private Long price;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PRESENTED_MEMBER_ID")
     private Member presentedBy;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "BOUGHT_MEMBER_ID")
     private Member boughtFrom;
 
     @Enumerated(EnumType.STRING)
     private ItemCategory itemCategory;
+
+    @Enumerated(EnumType.STRING)
+    private ItemStatus itemStatus;
 
     @Column(length = 20) //시리얼번호 규칙을 파악하자
     private String serialNumber;
@@ -69,7 +72,8 @@ public class Item {
     private UploadFile uploadFile;
 
     public Item(Member member, String itemName, String brandName, LocalDate registeredDate,
-                LocalDate expirationDate, Long price, ItemCategory itemCategory, String serialNumber, UploadFile uploadFile) {
+                LocalDate expirationDate, Long price, ItemCategory itemCategory, ItemStatus itemStatus,
+                String serialNumber, UploadFile uploadFile) {
         this.member = member;
         this.itemName = itemName;
         this.brandName = brandName;
@@ -77,6 +81,7 @@ public class Item {
         this.price = price;
         this.expirationDate = expirationDate;
         this.itemCategory = itemCategory;
+        this.itemStatus = itemStatus;
         this.serialNumber = serialNumber;
         this.uploadFile = uploadFile;
     }

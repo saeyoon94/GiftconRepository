@@ -8,26 +8,31 @@
     <link rel="stylesheet" type="text/css" href="css/item.css" th:href="@{/css/item.css}">
 </head>
 <body>
+<noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-58KLNBW" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe>
+    <img height="1" width="1" style="display:none"
+         src="https://www.facebook.com/tr?id=408076496057547&amp;ev=PageView&amp;noscript=1"/></noscript>
 <div id="__next">
-    <section class="FixedComponent_container__nqLTr FixedComponent_top__y-C-M">
+    <section class="FixedComponent_container__nqLTr FixedComponent_withSmartBanner__2IDDe FixedComponent_top__y-C-M">
         <div class="page-title PageTitle_container__wVTJI animated" style="background:rgba(255,255,255,0)">
             <div class="PageTitle_pageTitleWrap__3xlVE">
                 <div class="PageTitle_leftWrap__1DN6c">
                     <div>
                         <button class="PageTitleImageButton_button__3MXeo"><img
-                                src="//yaimg.yanolja.com/joy/sunny/static/images/btn-back-white-v7.svg" alt="뒤로가기"/>
+                                src="//yaimg.yanolja.com/joy/sunny/static/images/btn-back-white-v7.svg" alt="뒤로가기">
                         </button>
                     </div>
                 </div>
-                <h1 class="PageTitle_pageTitle__Q5MEn" style="color:#FFFFFF;opacity:0">[스타벅스][블론드] 아이스 카페 아메리카노</h1>
+                <h1 class="PageTitle_pageTitle__Q5MEn" style="color:#FFFFFF;opacity:0">[스타벅스]카페아메리카노 Tall</h1>
                 <div class="PageTitle_rightWrap__18rRe">
                     <div class="PageTitleRightButton_container__2liyp">
                         <button class="PageTitleImageButton_button__3MXeo"><img
-                                src="//yaimg.yanolja.com/joy/sunny/static/images/icon-share-white-line-2.svg" alt="공유"/>
+                                src="//yaimg.yanolja.com/joy/sunny/static/images/icon-share-white-line-2.svg" alt="공유">
                         </button>
                         <button class="PageTitleImageButton_button__3MXeo"><img
-                                src="//yaimg.yanolja.com/joy/sunny/static/images/icon-cart-line-white-2.svg"
-                                alt="장바구니"/></button>
+                                src="//yaimg.yanolja.com/joy/sunny/static/images/icon-cart-line-white-2.svg" alt="장바구니">
+                        </button>
                     </div>
                 </div>
             </div>
@@ -70,14 +75,15 @@
         </div>
     </div>
     <div class="StyleComponent_container__1jS9A LeisureDetailBody_layout__1zo7R">
-        <article>
+        <article th:object="${itemViewDto}">
             <div>
                 <div class="LeisureDetailImageHeader_container__lEo9c">
-                    <div class="swiper-container">
-                        <div class="swiper-wrapper">
-                            <div class="ImageFallback_wrap__3VXUV LeisureDetailImageHeader_image__259_k swiper-slide">
+                    <div class="swiper-container swiper-container-initialized swiper-container-horizontal swiper-container-android">
+                        <div class="swiper-wrapper" style="transform: translate3d(0px, 0px, 0px);">
+                            <div class="ImageFallback_wrap__3VXUV LeisureDetailImageHeader_image__259_k swiper-slide swiper-slide-active" style="height: 420px;">
+                                <div style="height: 100px"></div>
                                 <div class="ImageFallback_body__UgBLm"
-                                     style="background-image:url(https://static.leisureq.io/1200/production-gajago-deal-images/09ce4f2b-7b63-43bc-864e-daeee829c61f.jpeg)"></div>
+                                     th:style="|background-image: url(&quot;/items/image/${itemViewDto.imageURI}&quot;);width: 30vh;background-position: center;|"></div>
                                 <div class="LeisureDetailImageHeader_topOverlay__1b71Y"></div>
                                 <div class="LeisureDetailImageHeader_bottomOverlay__1TQ3S"></div>
                             </div>
@@ -89,14 +95,14 @@
             <div>
                 <header class="LeisureDetailTitle_container__1seHy">
                     <div class="LeisureDetailTitle_wrap__2P-NT">
-                        <h1 class="LeisureDetailTitle_title__39CSC">[스타벅스][블론드] 아이스 카페 아메리카노</h1>
+                        <h1 class="LeisureDetailTitle_title__39CSC" th:text="${itemViewDto.itemName}">[스타벅스][블론드] 아이스 카페 아메리카노</h1>
                         <p class="LeisureDetailTitle_desc__3gHN7"></p>
-                        <p class="LeisureDetailTitle_pointDesc__12EzW"><span>포인트로 레저/티켓 구매가능</span>
+                        <p class="LeisureDetailTitle_pointDesc__12EzW"><span th:text="${itemViewDto.itemCategory.value}">카페</span>
                         </p><a href="/leisure/brand/87" class="LeisureDetailTitle_brandItem__22l7Z">
                             <div class="ImageFallback_wrap__3VXUV LeisureDetailTitle_brandImageWrap__2AW-j">
                                 <div class="ImageFallback_body__UgBLm"></div>
                             </div>
-                            <span class="LeisureDetailTitle_brandTitle__1vpTb">스타벅스</span><span
+                            <span class="LeisureDetailTitle_brandTitle__1vpTb" th:text="${itemViewDto.brandName}">스타벅스</span><span
                                 class="LeisureDetailTitle_showMoreBtn__3xsN-">상품 더보기</span></a></div>
                 </header>
             </div>
@@ -111,14 +117,21 @@
                                         class="LeisureDetailDescription_pictogram__ebha4"
                                         src="https://yaimg.yanolja.com/v5/2018/06/18/09/5b2700c9c61c26.61017208.png"
                                         alt=""/><b class="LeisureDetailDescription_pictogramTitle__ypdND">유효기간</b></td>
-                                <td>구매 후 93일 이내</td>
+                                <td th:text="|~${itemViewDto.expirationDate}|">~2021-09.03</td>
                             </tr>
                             <tr class="LeisureDetailDescription_row__38Uqv">
                                 <td class="LeisureDetailDescription_pictogramTitleCell__15qN8"><img
                                         class="LeisureDetailDescription_pictogram__ebha4"
                                         src="https://yaimg.yanolja.com/v5/2018/06/18/09/5b2700c9e2a434.94674553.png"
                                         alt=""/><b class="LeisureDetailDescription_pictogramTitle__ypdND">당일이용</b></td>
-                                <td>가능</td>
+                                <td th:text="${itemViewDto.itemStatus.value}">가능</td>
+                            </tr>
+                            <tr class="LeisureDetailDescription_row__38Uqv">
+                                <td class="LeisureDetailDescription_pictogramTitleCell__15qN8"><img
+                                        class="LeisureDetailDescription_pictogram__ebha4"
+                                        src="https://yaimg.yanolja.com/v5/2018/06/18/09/5b2700c9e2a434.94674553.png"
+                                        alt=""/><b class="LeisureDetailDescription_pictogramTitle__ypdND">가격</b></td>
+                                <td th:text="|${itemViewDto.price}원|">4,100원</td>
                             </tr>
                             </tbody>
                         </table>

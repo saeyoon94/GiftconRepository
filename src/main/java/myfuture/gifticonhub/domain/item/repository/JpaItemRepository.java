@@ -26,14 +26,17 @@ public class JpaItemRepository implements ItemRepository{
     }
 
     @Override
-    public Optional<Item> findById(Long id) {
+    public Optional<Item> findById(Long id, Long memberId) {
         Item item = em.find(Item.class, id);
+        if (item.getMember().getId() != memberId) {
+            log.info("Illegal User Access!!"); //사용자가 자신의 아이템에만 접근할 수 있도록 통제
+        }
         return Optional.ofNullable(item);
     }
 
     @Override
     public List<Item> findByMemberId(Long memberId) {
-        List<Item> items = em.createQuery("select i from item i join i.member m on m.id=:memberId", Item.class)
+        List<Item> items = em.createQuery("SELECT i FROM Item i JOIN i.member m ON m.id=:memberId", Item.class)
                 .setParameter("memberId", memberId)
                 .getResultList();
         return items;

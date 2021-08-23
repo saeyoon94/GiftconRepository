@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface ItemService {
     public Item register(Item item);
-    public Optional<Item> findOne(Long itemId);
+    public Optional<Item> findOne(Long itemId, Long memberId);
 
     public List<Item> findItems(Long memberId);
 }
