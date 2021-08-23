@@ -109,6 +109,14 @@ p.field-error {
     margin-top: 10px
 }
 
+.DeepLinkBanner_image__2nMUl {
+    position: absolute;
+    top: 1.7rem;
+    left: 1.7rem;
+    display: inline-block;
+    height: 5rem;
+}
+
 .u_skip {
     position: absolute;
     clip: rect(0 0 0 0);
@@ -369,7 +377,7 @@ div[tabindex='-1'] {
 .btn_primary {
     color: #fff;
     border: solid 1px rgba(0,0,0,.08);
-    background-color: #03c75a
+    background-color: #FFD700
 }
 
 html[lang=en] .btn_type,html[lang=zh-Hans] .btn_type,html[lang=zh-Hant] .btn_type {
@@ -2151,7 +2159,7 @@ html[lang=en] .btn_global,html[lang=zh-Hans] .btn_global,html[lang=zh-Hant] .btn
     }
 
     .btn_type {
-        font-weight: 400
+        font-weight: 700
     }
 
     html[lang=en] .btn_type,html[lang=zh-Hans] .btn_type,html[lang=zh-Hant] .btn_type {

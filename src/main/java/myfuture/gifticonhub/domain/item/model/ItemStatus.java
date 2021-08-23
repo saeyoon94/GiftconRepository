@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public enum ItemStatus {
-    Available("사용가능"), Expired("사용기간만료"), Already_Used("사용완료");
+    Available("사용가능"), Impending("마감임박"), Expired("사용기간만료"), Already_Used("사용완료");
 
     private final String value;
 }

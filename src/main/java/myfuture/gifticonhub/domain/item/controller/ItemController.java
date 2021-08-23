@@ -12,6 +12,7 @@ import myfuture.gifticonhub.global.session.SessionDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.format.Formatter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,6 +35,12 @@ public class ItemController {
     private MemberService memberService;
     @Autowired
     private ItemService itemService;
+    
+    /**
+     *  todo : 상품수정 view와 기능 구현하고 ItemSatus CSS 잘 작동하는지 확인.
+     *  현재 날짜와 만기일을 비교하여 자동으로 아이템상태 변환하는 로직 구현 -> 가능하면 캐시도 적용해보자.
+
+     */
 
     @ModelAttribute("itemCategories")
     public ItemCategory[] itemCategories() {

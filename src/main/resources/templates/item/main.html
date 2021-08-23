@@ -15,7 +15,7 @@
                 <section class="SmartBanner_container__3Zp0y">
                     <button class="SmartBanner_close__1j2sZ"><i></i></button>
                     <section class="DeepLinkBanner_container__3oHeE"><img class="DeepLinkBanner_image__2nMUl"
-                                                                          src="//yaimg.yanolja.com/joy/sunny/static/images/promotion/bnr-smart-banner-app.svg">
+                                                                          th:src="@{/images/icon.png}">
                         <button class="DeepLinkBanner_action__2Y1Lt"><span>앱에서 보기</span><i></i></button>
                     </section>
                 </section>
@@ -79,7 +79,7 @@
                                          th:style="|height: 208px; left: 0px; position: absolute; top: ${itemViewDtoStat.index*208}px; width: 100%;|">
                                         <div>
                                             <div class="ExhibitionDetailDomesticLeisure_container__15r_2">
-                                                <a href="/leisure/71371" class="LeisureListItem_container__12YuE">
+                                                <a th:href="|/items/${itemViewDto.id}|" class="LeisureListItem_container__12YuE">
                                                 <div class="ImageFallback_wrap__3VXUV LeisureListItem_image__3xYDz">
                                                     <div class="ImageFallback_body__UgBLm"
                                                          th:style="|background-image: url(&quot;/items/image/${itemViewDto.imageURI}&quot;);height: 30vh;|"
@@ -99,9 +99,18 @@
                                                             <s></s>
                                                         </div>
                                                         <div class="LeisurePriceDiscount_wrap__36K-Q">
-                                                            <span class="LeisureCommonBadges_badge__3_xxA" style="float:left;"
+
+                                                            <th:block th:switch="${itemViewDto.itemStatus.name}">
+                                                                <span th:case="Available" class="LeisureCommonBadges_badge__3_xxA" style="float:left;background-color: #F3CC07;border: .1em solid #F3CC07;font-size: 1.2rem;font-weight: bold;color: white;"
                                                                   th:text="${itemViewDto.itemStatus.value}">사용 가능</span>
-                                                            <span class="LeisurePriceDiscount_amount__19qBa" th:text="${itemViewDto.price}">4,100</span>
+                                                                <span th:case="Impending" class="LeisureCommonBadges_badge__3_xxA" style="float:left;background-color: #F35D07;border: .1em solid #F35D07;font-size: 1.2rem;font-weight: bold;color: white;"
+                                                                      th:text="${itemViewDto.itemStatus.value}">마감 임박</span>
+                                                                <span th:case="Expired" class="LeisureCommonBadges_badge__3_xxA" style="float:left;background-color: #DADAD6;border: .1em solid #DADAD6;font-size: 1.2rem;font-weight: bold;color: white;"
+                                                                      th:text="${itemViewDto.itemStatus.value}">기간 만료</span>
+                                                                <span th:case="Already_Used" class="LeisureCommonBadges_badge__3_xxA" style="float:left;background-color: #242405;border: .1em solid #242405;font-size: 1.2rem;font-weight: bold;color: white;"
+                                                                      th:text="${itemViewDto.itemStatus.value}">사용 완료</span>
+                                                            </th:block>
+                                                            <span class="LeisurePriceDiscount_amount__19qBa" th:text="${{itemViewDto.price}}">4,100</span>
                                                             <span class="LeisurePriceDiscount_unit__19gEJ">원</span>
                                                         </div>
                                                     </div>
@@ -123,8 +132,7 @@
                 </div>
                 <div class="ToTopButton_container__80T0O ToTopButton_containerVisible__2Wpm3 ExhibitionDetailBody_toTopButton__1_-Mt">
                     <button class="ToTopButton_button__2Y4Fv" onclick="location.href='/items/new'">
-                        <div><img src="https://png.pngtree.com/png-clipart/20190705/original/pngtree-vector-add-icon-png-image_4275926.jpg" alt=""
-                                  style="max-width: 100%; height: auto;"></div>
+                        <div><img th:src="@{/images/plus.png}" alt="" style="max-width: 100%; height: auto;"></div>
                     </button>
                 </div>
             </div>

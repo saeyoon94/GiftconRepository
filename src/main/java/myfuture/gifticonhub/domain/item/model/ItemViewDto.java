@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Value;
 import myfuture.gifticonhub.domain.member.model.Member;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.NumberFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
@@ -18,6 +19,8 @@ import java.util.List;
 @NoArgsConstructor
 public class ItemViewDto {
 
+    private Long id;
+
     private String itemName;
 
     private String brandName;
@@ -28,11 +31,13 @@ public class ItemViewDto {
 
     private ItemStatus itemStatus;
 
+    @NumberFormat(pattern = "###,###")
     private Long price;
 
     private String imageURI;
 
     public ItemViewDto(Item item) {
+        this.id = item.getId();
         this.itemName = item.getItemName();
         this.brandName = item.getBrandName();
         this.expirationDate = item.getExpirationDate();

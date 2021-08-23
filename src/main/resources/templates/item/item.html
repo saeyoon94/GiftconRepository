@@ -80,10 +80,10 @@
                 <div class="LeisureDetailImageHeader_container__lEo9c">
                     <div class="swiper-container swiper-container-initialized swiper-container-horizontal swiper-container-android">
                         <div class="swiper-wrapper" style="transform: translate3d(0px, 0px, 0px);">
-                            <div class="ImageFallback_wrap__3VXUV LeisureDetailImageHeader_image__259_k swiper-slide swiper-slide-active" style="height: 420px;">
+                            <div class="ImageFallback_wrap__3VXUV LeisureDetailImageHeader_image__259_k swiper-slide swiper-slide-active" style="height: 630px;">
                                 <div style="height: 100px"></div>
                                 <div class="ImageFallback_body__UgBLm"
-                                     th:style="|background-image: url(&quot;/items/image/${itemViewDto.imageURI}&quot;);width: 30vh;background-position: center;|"></div>
+                                     th:style="|background-image: url(&quot;/items/image/${itemViewDto.imageURI}&quot;);width: 45vh;background-position: center;margin: 0 auto;|"></div>
                                 <div class="LeisureDetailImageHeader_topOverlay__1b71Y"></div>
                                 <div class="LeisureDetailImageHeader_bottomOverlay__1TQ3S"></div>
                             </div>
@@ -131,7 +131,7 @@
                                         class="LeisureDetailDescription_pictogram__ebha4"
                                         src="https://yaimg.yanolja.com/v5/2018/06/18/09/5b2700c9e2a434.94674553.png"
                                         alt=""/><b class="LeisureDetailDescription_pictogramTitle__ypdND">가격</b></td>
-                                <td th:text="|${itemViewDto.price}원|">4,100원</td>
+                                <td th:text="|${{itemViewDto.price}}원|">4,100원</td>
                             </tr>
                             </tbody>
                         </table>
