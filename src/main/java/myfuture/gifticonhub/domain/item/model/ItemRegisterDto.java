@@ -37,8 +37,22 @@ public class ItemRegisterDto {
     @NotNull
     private MultipartFile attachFile;
 
+    /*
+    private String imageURI;
+
+    public ItemRegisterDto(ItemViewDto itemViewDto) {
+        this.itemName = itemViewDto.getItemName();
+        this.brandName = itemViewDto.getBrandName();
+        this.expirationDate = itemViewDto.getExpirationDate();
+        this.itemCategory = itemViewDto.getItemCategory();
+        this.serialNumber = itemViewDto.;
+        this.price = price;
+        this.imageURI = imageURI;
+    }
+    */
+
+
     public Item toEntity(Member member, UploadFile uploadFile) {
         return new Item(member, itemName, brandName, LocalDate.now(), expirationDate, price, itemCategory, ItemStatus.Available, serialNumber, uploadFile);
-
     }
 }

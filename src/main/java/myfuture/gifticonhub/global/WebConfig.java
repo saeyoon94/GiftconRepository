@@ -2,6 +2,7 @@ package myfuture.gifticonhub.global;
 
 import myfuture.gifticonhub.global.interceptor.AuthenticationInterceptor;
 import myfuture.gifticonhub.global.interceptor.LogInterceptor;
+import myfuture.gifticonhub.global.interceptor.TempSessionInterceptor;
 import myfuture.gifticonhub.global.session.LoginMemberArgumentResolver;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -23,6 +24,10 @@ public class WebConfig implements WebMvcConfigurer {
                 .order(2)
                 .addPathPatterns("/**")
                 .excludePathPatterns("/", "/images/**", "/join", "/login", "/logout", "/css/**", "/*.ico", "/error");
+        registry.addInterceptor(new TempSessionInterceptor())
+                .order(3)
+                .addPathPatterns("/items")
+                .excludePathPatterns("/items/**/edit");
     }
 
     @Override

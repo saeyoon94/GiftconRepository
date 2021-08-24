@@ -4,7 +4,7 @@
     <meta charSet="utf-8"/>
     <meta name="viewport"
           content="initial-scale=1, maximum-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"/>
-    <title>기프티콘 저장소 : 기프티콘 조회</title>
+    <title>기프티콘 저장소 : 기프티콘 수정</title>
     <link rel="stylesheet" type="text/css" href="css/item.css" th:href="@{/css/item.css}">
 </head>
 <body>
@@ -75,7 +75,8 @@
         </div>
     </div>
     <div class="StyleComponent_container__1jS9A LeisureDetailBody_layout__1zo7R">
-        <article th:object="${itemViewDto}">
+        <form action="" method="post" th:action th:object="${itemViewDto}" enctype="multipart/form-data">
+        <article>
             <div>
                 <div class="LeisureDetailImageHeader_container__lEo9c">
                     <div class="swiper-container swiper-container-initialized swiper-container-horizontal swiper-container-android">
@@ -83,7 +84,7 @@
                             <div class="ImageFallback_wrap__3VXUV LeisureDetailImageHeader_image__259_k swiper-slide swiper-slide-active" style="height: 630px;">
                                 <div style="height: 100px"></div>
                                 <div class="ImageFallback_body__UgBLm"
-                                     th:style="|background-image: url(&quot;/items/image/${itemViewDto.imageURI}&quot;);width: 45vh;background-position: center;margin: 0 auto;|"></div>
+                                     th:style="|background-image: url(&quot;/items/image/*{imageURI}&quot;);width: 45vh;background-position: center;margin: 0 auto;|"></div>
                                 <div class="LeisureDetailImageHeader_topOverlay__1b71Y"></div>
                                 <div class="LeisureDetailImageHeader_bottomOverlay__1TQ3S"></div>
                             </div>
@@ -95,14 +96,18 @@
             <div>
                 <header class="LeisureDetailTitle_container__1seHy">
                     <div class="LeisureDetailTitle_wrap__2P-NT">
-                        <h1 class="LeisureDetailTitle_title__39CSC" th:text="${itemViewDto.itemName}">[스타벅스][블론드] 아이스 카페 아메리카노</h1>
+                        <input type="text" class="LeisureDetailTitle_title__39CSC" th:field="*{itemName}" style="width: -webkit-fill-available;border: white;"/>
                         <p class="LeisureDetailTitle_desc__3gHN7"></p>
-                        <p class="LeisureDetailTitle_pointDesc__12EzW"><span th:text="${itemViewDto.itemCategory.value}">카페</span>
+                        <p class="LeisureDetailTitle_pointDesc__12EzW">
+                            <select class="css-1pfv6fx" th:field="*{itemCategory}">
+                                <option value="">==분류 선택==</option>
+                                <option th:each="itemCategory : ${itemCategories}" th:value="${itemCategory}" th:text="${itemCategory.value}">카페</option>
+                            </select>
                         </p><a href="/leisure/brand/87" class="LeisureDetailTitle_brandItem__22l7Z">
                             <div class="ImageFallback_wrap__3VXUV LeisureDetailTitle_brandImageWrap__2AW-j">
                                 <div class="ImageFallback_body__UgBLm"></div>
                             </div>
-                            <span class="LeisureDetailTitle_brandTitle__1vpTb" th:text="${itemViewDto.brandName}">스타벅스</span><span
+                            <input type="text" class="LeisureDetailTitle_brandTitle__1vpTb" th:field="*{brandName}"/><span
                                 class="LeisureDetailTitle_showMoreBtn__3xsN-">상품 더보기</span></a></div>
                 </header>
             </div>
@@ -117,7 +122,7 @@
                                         class="LeisureDetailDescription_pictogram__ebha4"
                                         src="https://yaimg.yanolja.com/v5/2018/06/18/09/5b2700c9c61c26.61017208.png"
                                         alt=""/><b class="LeisureDetailDescription_pictogramTitle__ypdND">유효기간</b></td>
-                                <td th:text="|~${itemViewDto.expirationDate}|">~2021-09.03</td>
+                                <td><input type="date" th:field="*{expirationDate}" th:value="*{expirationDate}"/></td>
                             </tr>
                             <tr class="LeisureDetailDescription_row__38Uqv">
                                 <td class="LeisureDetailDescription_pictogramTitleCell__15qN8"><img
