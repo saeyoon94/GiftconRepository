@@ -1,6 +1,7 @@
 package myfuture.gifticonhub.domain.item.service;
 
 
+import lombok.extern.slf4j.Slf4j;
 import myfuture.gifticonhub.domain.item.model.UploadFile;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class FileServiceImpl implements FileService{
 
     @Value("${file.dir}")
@@ -39,6 +41,17 @@ public class FileServiceImpl implements FileService{
         multipartFile.transferTo(new File(getFullPath(storeFilename, loginMemberId)));
 
         return new UploadFile(originalFilename, storeFilename);
+    }
+
+    @Override
+    public boolean deleteFile(String storeFileName, Long loginMemberId) {
+        File file = new File(getFullPath(storeFileName, loginMemberId));
+        if (file.exists()) {
+            log.info("Deleting file : name={}", storeFileName);
+            return file.delete();
+        }
+        log.info("File delete fails : name={}, No Such Files", storeFileName);
+        return false;
     }
 
     public String createStoreFilename(String originalFilename) {

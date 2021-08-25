@@ -75,7 +75,7 @@
         </div>
     </div>
     <div class="StyleComponent_container__1jS9A LeisureDetailBody_layout__1zo7R">
-        <form action="" method="post" th:action th:object="${itemViewDto}" enctype="multipart/form-data">
+        <form action="" method="post" th:action th:object="${itemEditDto}" enctype="multipart/form-data">
         <article>
             <div>
                 <div class="LeisureDetailImageHeader_container__lEo9c">
@@ -85,6 +85,7 @@
                                 <div style="height: 100px"></div>
                                 <div class="ImageFallback_body__UgBLm"
                                      th:style="|background-image: url(&quot;/items/image/*{imageURI}&quot;);width: 45vh;background-position: center;margin: 0 auto;|"></div>
+                                <input type="text"  th:field="*{imageURI}" hidden/>
                                 <div class="LeisureDetailImageHeader_topOverlay__1b71Y"></div>
                                 <div class="LeisureDetailImageHeader_bottomOverlay__1TQ3S"></div>
                             </div>
@@ -96,19 +97,25 @@
             <div>
                 <header class="LeisureDetailTitle_container__1seHy">
                     <div class="LeisureDetailTitle_wrap__2P-NT">
-                        <input type="text" class="LeisureDetailTitle_title__39CSC" th:field="*{itemName}" style="width: -webkit-fill-available;border: white;"/>
+                        <input type="text" class="LeisureDetailTitle_title__39CSC" th:field="*{itemName}" style="width: -webkit-fill-available;border-width: thin;"/>
+                        <p class="field-error" th:errors="*{itemName}">상품명 오류</p>
                         <p class="LeisureDetailTitle_desc__3gHN7"></p>
-                        <p class="LeisureDetailTitle_pointDesc__12EzW">
+                        <p class="LeisureDetailTitle_pointDesc__12EzW" style="justify-content: space-between;">
                             <select class="css-1pfv6fx" th:field="*{itemCategory}">
                                 <option value="">==분류 선택==</option>
                                 <option th:each="itemCategory : ${itemCategories}" th:value="${itemCategory}" th:text="${itemCategory.value}">카페</option>
                             </select>
-                        </p><a href="/leisure/brand/87" class="LeisureDetailTitle_brandItem__22l7Z">
+                            <p class="field-error" th:errors="*{itemCategory}">분류 오류</p>
+                            <input type="file" th:field="*{attachFile}" class="css-1pfv6fx"/>
+                            <p class="field-error" th:errors="*{attachFile}">사진 오류</p>
+                        </p>
                             <div class="ImageFallback_wrap__3VXUV LeisureDetailTitle_brandImageWrap__2AW-j">
                                 <div class="ImageFallback_body__UgBLm"></div>
                             </div>
-                            <input type="text" class="LeisureDetailTitle_brandTitle__1vpTb" th:field="*{brandName}"/><span
-                                class="LeisureDetailTitle_showMoreBtn__3xsN-">상품 더보기</span></a></div>
+                            <b class="LeisureDetailDescription_pictogramTitle__ypdND" style="font-size: 15px;margin-left: 0rem;border-width: thin;">교환처</b>
+                            <input type="text" class="LeisureDetailTitle_brandTitle__1vpTb" th:field="*{brandName}" style="border-width: thin;"/>
+                            <p class="field-error" th:errors="*{brandName}">교환처 오류</p>
+                    </div>
                 </header>
             </div>
             <div>
@@ -122,21 +129,30 @@
                                         class="LeisureDetailDescription_pictogram__ebha4"
                                         src="https://yaimg.yanolja.com/v5/2018/06/18/09/5b2700c9c61c26.61017208.png"
                                         alt=""/><b class="LeisureDetailDescription_pictogramTitle__ypdND">유효기간</b></td>
-                                <td><input type="date" th:field="*{expirationDate}" th:value="*{expirationDate}"/></td>
-                            </tr>
-                            <tr class="LeisureDetailDescription_row__38Uqv">
-                                <td class="LeisureDetailDescription_pictogramTitleCell__15qN8"><img
-                                        class="LeisureDetailDescription_pictogram__ebha4"
-                                        src="https://yaimg.yanolja.com/v5/2018/06/18/09/5b2700c9e2a434.94674553.png"
-                                        alt=""/><b class="LeisureDetailDescription_pictogramTitle__ypdND">당일이용</b></td>
-                                <td th:text="${itemViewDto.itemStatus.value}">가능</td>
+                                <td>
+                                    <input type="date" th:field="*{expirationDate}" th:value="*{expirationDate}" style="border-width: thin;"/>
+                                    <p class="field-error" th:errors="*{expirationDate}">만기일 오류</p>
+                                </td>
                             </tr>
                             <tr class="LeisureDetailDescription_row__38Uqv">
                                 <td class="LeisureDetailDescription_pictogramTitleCell__15qN8"><img
                                         class="LeisureDetailDescription_pictogram__ebha4"
                                         src="https://yaimg.yanolja.com/v5/2018/06/18/09/5b2700c9e2a434.94674553.png"
                                         alt=""/><b class="LeisureDetailDescription_pictogramTitle__ypdND">가격</b></td>
-                                <td th:text="|${{itemViewDto.price}}원|">4,100원</td>
+                                <td>
+                                    <input type="text" th:field="*{price}" style="border-width: thin;"/>
+                                    <p class="field-error" th:errors="*{price}">가격 오류</p>
+                                </td>
+                            </tr>
+                            <tr class="LeisureDetailDescription_row__38Uqv">
+                                <td class="LeisureDetailDescription_pictogramTitleCell__15qN8"><img
+                                        class="LeisureDetailDescription_pictogram__ebha4"
+                                        src="https://yaimg.yanolja.com/v5/2018/06/18/09/5b2700c9e2a434.94674553.png"
+                                        alt=""/><b class="LeisureDetailDescription_pictogramTitle__ypdND">시리얼 번호</b></td>
+                                <td>
+                                    <input type="text" th:field="*{serialNumber}" style="border-width: thin;"/>
+                                    <p class="field-error" th:errors="*{serialNumber}">시리얼번호 오류</p>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
@@ -855,9 +871,9 @@
                     </button>
                 </div>
                 <div class="CTAButtonForCart_buttonWrap__7lSi0 CTAButtonForCart_wishMainButtonWrap__2FNUm">
-                    <button as="button" type="button"
+                    <button as="button" type="submit"
                             class="BaseButton_button__tzyL8 RectButton_primary__3O9TH CTAButtonForCart_button__2vEv5">
-                        <span class="RectButton_label__WcAp7" th:onclick="|location.href='/items/${itemViewDto.id}/edit'|">수정</span></button>
+                        <span class="RectButton_label__WcAp7">저장</span></button>
                 </div>
             </div>
         </div>

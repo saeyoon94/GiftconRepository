@@ -8,6 +8,7 @@ import myfuture.gifticonhub.domain.member.model.Member;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -48,6 +49,8 @@ public class Item {
 
     @Column(nullable = false)
     private LocalDate expirationDate;
+
+    private LocalDateTime lastModified;
 
     private Long price;
 

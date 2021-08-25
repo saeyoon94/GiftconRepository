@@ -9,6 +9,6 @@ public interface FileService {
 
     public String getFullPath(String fileName, Long loginMemberId);
     public UploadFile storeFile(MultipartFile multipartFile, Long loginMemberId) throws IOException;
-
+    public boolean deleteFile(String storedFileName, Long loginMemberId);
 
 }

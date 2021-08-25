@@ -19,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -43,7 +44,7 @@ public class ItemController {
      *  todo : 상품수정 view와 기능 구현하고 ItemSatus CSS 잘 작동하는지 확인.
      *  excludepatterns 자세히 알아보기(/new에서 /*로 적용되어버리는거같음)
      *  현재 날짜와 만기일을 비교하여 자동으로 아이템상태 변환하는 로직 구현 -> 가능하면 캐시도 적용해보자.
-     *  DTO 뭘 어떻게 사용할지 잘 정의해보자.
+     *  상품 수정한 다음 redirect할 때 itemViewDto가 그대로 같이 넘어가서 DB조회 할 필요 없도록 해보자.
 
      */
 
@@ -97,10 +98,13 @@ public class ItemController {
     //메인화면에서 특정 아이템 선택했을 때 보여주는 상세 페이지
     @GetMapping(value = "/{itemId}")
     public String itemDetails(HttpServletRequest request, @PathVariable Long itemId, @Login SessionDto loginSession, Model model) {
-        findItemAndStoreModel(itemId, loginSession, model);
-        //아이템 수정 뷰에서 사용할 수 있도록 모델의 값을 세션에 저장
+        Item item = itemService.findOne(itemId, loginSession.getId()).get();
+        ItemViewDto itemViewDto = new ItemViewDto(item);
+        model.addAttribute("itemViewDto", itemViewDto);
+
+        //아이템 수정 뷰에서 사용할 수 있도록 item객체를 세션에 저장
         HttpSession session = request.getSession();
-        session.setAttribute(SessionConst.TEMP_MODEL, model.getAttribute("itemViewDto"));
+        session.setAttribute(SessionConst.TEMP_MODEL, item);
         return "item/item";
     }
 
@@ -112,20 +116,34 @@ public class ItemController {
             log.info("editForm, session=null");
             return "redirect:/login";
         }
-        ItemViewDto itemViewDto = (ItemViewDto) session.getAttribute(SessionConst.TEMP_MODEL);
-        if (itemViewDto != null) {  //SessionConst.TEMP_MODEL 세션값이 있는 경우(/{itemId}에서 바로 넘어온 경우)
-            model.addAttribute("itemViewDto", itemViewDto);
-            log.info("editForm, itemViewDto={}", itemViewDto);
+        Item item = (Item) session.getAttribute(SessionConst.TEMP_MODEL);
+        if (item != null) {  //SessionConst.TEMP_MODEL 세션값이 있는 경우(/{itemId}에서 바로 넘어온 경우)
+            ItemEditDto itemEditDto = new ItemEditDto(item);
+            model.addAttribute("itemEditDto", itemEditDto);
+            log.info("editForm, itemEditDto={}", itemEditDto);
         } else { //SessionConst.TEMP_MODEL 세션값이 없는 경우(/{itemId}에서 바로 넘어오지 않은 경우)
-            findItemAndStoreModel(itemId, loginSession, model);
-            log.info("editForm, no itemViewDto");
+            Item itemFromDB = itemService.findOne(itemId, loginSession.getId()).get();
+            ItemEditDto itemEditDto = new ItemEditDto(itemFromDB);
+            model.addAttribute("itemEditDto", itemEditDto);
+            log.info("editForm, no itemEditDto");
         }
         return "item/edit";
     }
 
-    private void findItemAndStoreModel(Long itemId, SessionDto loginSession, Model model) {
-        Optional<Item> item = itemService.findOne(itemId, loginSession.getId());
-        ItemViewDto itemViewDto = new ItemViewDto(item.get());
-        model.addAttribute("itemViewDto", itemViewDto);
+    //아이템 수정
+    @PostMapping(value = "/{itemId}/edit")
+    public String edit(@PathVariable Long itemId, @ModelAttribute ItemEditDto itemEditDto, BindingResult bindingResult,
+                       @Login SessionDto loginSession, RedirectAttributes redirectAttributes) throws IOException {
+        log.info("itemEditDto={}", itemEditDto);
+        if (loginSession == null) {
+            return "redirect:/login";
+        }
+        if (bindingResult.hasErrors()) {
+            log.info("errors={}",bindingResult);
+            return "item/edit";
+        }
+        ItemViewDto itemViewDto = itemService.modifyItem(loginSession.getId(), itemId, itemEditDto);
+        return "redirect:/items/{itemId}";
+
     }
 }
