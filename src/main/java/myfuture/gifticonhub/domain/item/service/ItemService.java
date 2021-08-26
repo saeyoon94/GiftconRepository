@@ -14,5 +14,5 @@ public interface ItemService {
 
     public List<Item> findItems(Long memberId);
 
-    public ItemViewDto modifyItem(Long memberId, Long itemId, ItemEditDto itemEditDto) throws IOException;
+    public Item modifyItem(Long memberId, Long itemId, ItemEditDto itemEditDto) throws IOException;
 }

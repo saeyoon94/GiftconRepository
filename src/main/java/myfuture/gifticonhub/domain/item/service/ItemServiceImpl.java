@@ -44,7 +44,7 @@ public class ItemServiceImpl implements ItemService{
     }
 
     @Override
-    public ItemViewDto modifyItem(Long memberId, Long itemId, ItemEditDto itemEditDto) throws IOException {
+    public Item modifyItem(Long memberId, Long itemId, ItemEditDto itemEditDto) throws IOException {
         Optional<Item> item = findOne(itemId, memberId);
         //파일 업로드하지 않은 경우
         if (itemEditDto.getAttachFile().isEmpty()) {
@@ -65,6 +65,6 @@ public class ItemServiceImpl implements ItemService{
             }
         }
 
-        return new ItemViewDto(item.get());
+        return item.get();
     }
 }

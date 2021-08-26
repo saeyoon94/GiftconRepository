@@ -44,7 +44,11 @@ public class ItemController {
      *  todo : 상품수정 view와 기능 구현하고 ItemSatus CSS 잘 작동하는지 확인.
      *  excludepatterns 자세히 알아보기(/new에서 /*로 적용되어버리는거같음)
      *  현재 날짜와 만기일을 비교하여 자동으로 아이템상태 변환하는 로직 구현 -> 가능하면 캐시도 적용해보자.
-     *  상품 수정한 다음 redirect할 때 itemViewDto가 그대로 같이 넘어가서 DB조회 할 필요 없도록 해보자.
+     *  main페이지에서 전체 조회한 데이터는 ehcashe를 통해 저장해서 사용하다가 수정이나 등록이 발생한 경우
+     *  캐시를 리셋하는 방식으로 할까 했는데... 너무 조회 빈도가 낮을 것 같아서 여기에는 사용 안하는걸로...
+     *  앞으로 검색 기능등이 개발되면 고려해보자.
+     *
+     *  대신 아이템상태 변경하는건 스프링 배치로 구현해보자.
 
      */
 
@@ -97,14 +101,29 @@ public class ItemController {
 
     //메인화면에서 특정 아이템 선택했을 때 보여주는 상세 페이지
     @GetMapping(value = "/{itemId}")
-    public String itemDetails(HttpServletRequest request, @PathVariable Long itemId, @Login SessionDto loginSession, Model model) {
-        Item item = itemService.findOne(itemId, loginSession.getId()).get();
+    public String itemDetails(HttpServletRequest request, @PathVariable Long itemId, @Login SessionDto loginSession,
+                              Model model, @ModelAttribute Item itemThroughRedirection) {
+
+        //일반적인 경우
+        Item item;
+        if (itemThroughRedirection.getId() == null) {  //itemThroughRedirection=null로 했더니 모든 필드가 null인 객체로 초기화되어 분기를 안탐
+            log.info("Item(id={}) View Normal Case", itemId);
+            item = itemService.findOne(itemId, loginSession.getId()).get();
+        }
+        //상품 수정 후 리다이렉션으로 item이 넘어오는 경우
+        else {
+            log.info("Item(id={}) View From Redirect Item={}", itemId, itemThroughRedirection);
+            item = itemThroughRedirection;
+        }
         ItemViewDto itemViewDto = new ItemViewDto(item);
         model.addAttribute("itemViewDto", itemViewDto);
 
         //아이템 수정 뷰에서 사용할 수 있도록 item객체를 세션에 저장
+        //(이 방법을 redirectAttributes보다 먼저 생각해내서 이렇게 적용한건데, 둘이 동작 방식이 비슷한가?
+        //redirect상황이 아닐때도 사용이 가능한지는 모르겠지만 이 방식으로 두자.
         HttpSession session = request.getSession();
         session.setAttribute(SessionConst.TEMP_MODEL, item);
+
         return "item/item";
     }
 
@@ -142,7 +161,8 @@ public class ItemController {
             log.info("errors={}",bindingResult);
             return "item/edit";
         }
-        ItemViewDto itemViewDto = itemService.modifyItem(loginSession.getId(), itemId, itemEditDto);
+        Item item = itemService.modifyItem(loginSession.getId(), itemId, itemEditDto);
+        redirectAttributes.addFlashAttribute("item", item);
         return "redirect:/items/{itemId}";
 
     }
