@@ -5,6 +5,7 @@ import myfuture.gifticonhub.domain.item.model.ItemEditDto;
 import myfuture.gifticonhub.domain.item.model.ItemViewDto;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,4 +16,8 @@ public interface ItemService {
     public List<Item> findItems(Long memberId);
 
     public Item modifyItem(Long memberId, Long itemId, ItemEditDto itemEditDto) throws IOException;
+
+    public List<Item> updateItemStatus(List<Item> items, LocalDate now);
+
+    public void init();
 }

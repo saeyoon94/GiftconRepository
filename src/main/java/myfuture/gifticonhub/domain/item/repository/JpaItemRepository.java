@@ -41,4 +41,10 @@ public class JpaItemRepository implements ItemRepository{
                 .getResultList();
         return items;
     }
+
+    @Override
+    public List<Item> findAll() {
+        List<Item> items = em.createQuery("SELECT i FROM Item i", Item.class).getResultList();
+        return items;
+    }
 }

@@ -1,9 +1,13 @@
 package myfuture.gifticonhub.domain.item.service;
 
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import myfuture.gifticonhub.domain.item.model.UploadFile;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,6 +17,14 @@ import java.util.UUID;
 
 @Service
 @Slf4j
+@NoArgsConstructor
+@AllArgsConstructor
+/**
+ * 아래 value로 파일경로를 받는게 스프링에 의존적이다보니 단위테스트가 불가하여 final을 붙이고 @RequiredArgsConstructor를 붙여 사용
+ * 그렇게 직접 생성자로 값을 주입하여 단위테스트는 진행하였는데 @Value에 값이 주입되는 시점이 Bean의 초기화시점보다 느려
+ * 이 빈이 초기화되지 못하여 컨테이너가 올라오지 못함. 그래서 fileDir을 생성자로 주입받을 수도 있고 아닐수도 있도록
+ * 기본 생성자와 fileDir이 포함된 생성자를 모두 정의
+ */
 public class FileServiceImpl implements FileService{
 
     @Value("${file.dir}")
