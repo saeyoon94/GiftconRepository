@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import myfuture.gifticonhub.domain.item.model.Item;
 import myfuture.gifticonhub.domain.member.model.Member;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -46,5 +47,11 @@ public class JpaItemRepository implements ItemRepository{
     public List<Item> findAll() {
         List<Item> items = em.createQuery("SELECT i FROM Item i", Item.class).getResultList();
         return items;
+    }
+
+    @Override
+    public Item rePersist(Item item) {
+        Item mergedItem = em.merge(item);
+        return mergedItem;
     }
 }

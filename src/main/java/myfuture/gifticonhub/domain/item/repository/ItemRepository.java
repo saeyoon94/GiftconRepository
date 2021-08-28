@@ -10,4 +10,5 @@ public interface ItemRepository {
     Optional<Item> findById(Long id, Long memberId) ;
     List<Item> findByMemberId(Long memberId);
     List<Item> findAll();
+    Item rePersist(Item item);
 }

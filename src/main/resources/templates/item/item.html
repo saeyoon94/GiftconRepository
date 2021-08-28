@@ -97,13 +97,20 @@
                     <div class="LeisureDetailTitle_wrap__2P-NT">
                         <h1 class="LeisureDetailTitle_title__39CSC" th:text="${itemViewDto.itemName}">[스타벅스][블론드] 아이스 카페 아메리카노</h1>
                         <p class="LeisureDetailTitle_desc__3gHN7"></p>
-                        <p class="LeisureDetailTitle_pointDesc__12EzW"><span th:text="${itemViewDto.itemCategory.value}">카페</span>
-                        </p><a href="/leisure/brand/87" class="LeisureDetailTitle_brandItem__22l7Z">
+                        <p class="LeisureDetailTitle_pointDesc__12EzW"><span th:text="${itemViewDto.itemCategory.value}">카페</span></p>
+                        <a href="/leisure/brand/87" class="LeisureDetailTitle_brandItem__22l7Z">
                             <div class="ImageFallback_wrap__3VXUV LeisureDetailTitle_brandImageWrap__2AW-j">
                                 <div class="ImageFallback_body__UgBLm"></div>
                             </div>
-                            <span class="LeisureDetailTitle_brandTitle__1vpTb" th:text="${itemViewDto.brandName}">스타벅스</span><span
-                                class="LeisureDetailTitle_showMoreBtn__3xsN-">상품 더보기</span></a></div>
+                            <span class="LeisureDetailTitle_brandTitle__1vpTb" th:text="${itemViewDto.brandName}">스타벅스</span>
+                            <span>사용완료 </span>
+                            <form method="post" th:action>
+                                <input type="checkbox" th:field="*{isUsed}">
+                                <button type="submit"><span>확인</span></button>
+                            </form>
+
+                        </a>
+                    </div>
                 </header>
             </div>
             <div>

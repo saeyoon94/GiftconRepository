@@ -19,5 +19,7 @@ public interface ItemService {
 
     public List<Item> updateItemStatus(List<Item> items, LocalDate now);
 
+    public Item applyUsedStatus(Item item, Boolean isUsed);
+
     public void init();
 }

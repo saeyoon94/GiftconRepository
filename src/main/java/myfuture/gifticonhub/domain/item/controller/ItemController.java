@@ -110,7 +110,7 @@ public class ItemController {
         //일반적인 경우
         Item item;
         if (itemThroughRedirection.getId() == null) {  //itemThroughRedirection=null로 했더니 모든 필드가 null인 객체로 초기화되어 분기를 안탐
-            log.info("Item(id={}) View Normal Case", itemId);
+            log.info("Item(id={}) Item from DB", itemId);
             item = itemService.findOne(itemId, loginSession.getId()).get();
         }
         //상품 수정 후 리다이렉션으로 item이 넘어오는 경우
@@ -130,6 +130,38 @@ public class ItemController {
         return "item/item";
     }
 
+    //상세페이지에서 기프트콘 사용여부 체크
+
+    /**
+     try1 : 아이템 상태를 수정하는 비지니스 로직은 엔티티에 직접 작성해서 컨트롤러에서 직접 사용
+     -> Entity가 수정되었으나 update 쿼리가 나가지 않음
+     try2 : 수정 비지니스 로직을 컨트롤러가 아닌 서비스 계층에서 호출
+     -> 트랜잭션 범위 밖에서 호출된거라 commit이 안 들어간다고 가정하고 @Transactional이 붙은 서비스계층에서 호출
+     -> 여전히 쿼리가 나가지 않음
+     try3 : 이미 예전에 commit된 엔티티를 세션에 저장해 두었다가 꺼내 쓰는 것이므로 준영속 상태가 된 것임을 가정
+     -> em.persist 호출 결과 detached entity passed to persist 에러 발생. 가정이 맞았음을 확신하고 em.merge로 해결
+     -> 그러나 업데이트 쿼리만 나갈 수 있도록 최적화하기 위해 세션에 저장해두고 쓰는건데 em.merge시 update 전에 select쿼리가 나가고 있음.
+     */
+    @PostMapping(value = "/{itemId}")
+    public String checkIfUsed(@RequestParam(value = "isUsed", defaultValue = "false") Boolean isUsed, HttpServletRequest request,
+                              RedirectAttributes redirectAttributes) throws IllegalAccessException {
+        log.info("isUsed={}", isUsed);
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            log.info("isUsed? session=null!");
+        }
+        Item item = (Item) session.getAttribute(SessionConst.TEMP_MODEL);
+        if (item == null) {
+            throw new IllegalAccessException("No Item in Session!");
+        }
+        Item appliedItem = itemService.applyUsedStatus(item, isUsed);
+        redirectAttributes.addFlashAttribute("item", appliedItem);
+
+        return "redirect:/items/{itemId}";
+    }
+
+
+
     //상세 아이템 수정 뷰
     @GetMapping(value = "/{itemId}/edit")
     public String editForm(HttpServletRequest request, @PathVariable Long itemId, @Login SessionDto loginSession, Model model) {
@@ -142,12 +174,12 @@ public class ItemController {
         if (item != null) {  //SessionConst.TEMP_MODEL 세션값이 있는 경우(/{itemId}에서 바로 넘어온 경우)
             ItemEditDto itemEditDto = new ItemEditDto(item);
             model.addAttribute("itemEditDto", itemEditDto);
-            log.info("editForm, itemEditDto={}", itemEditDto);
+            log.info("editForm from Session : itemEditDto={}", itemEditDto);
         } else { //SessionConst.TEMP_MODEL 세션값이 없는 경우(/{itemId}에서 바로 넘어오지 않은 경우)
             Item itemFromDB = itemService.findOne(itemId, loginSession.getId()).get();
             ItemEditDto itemEditDto = new ItemEditDto(itemFromDB);
             model.addAttribute("itemEditDto", itemEditDto);
-            log.info("editForm, no itemEditDto");
+            log.info("editForm From DB");
         }
         return "item/edit";
     }

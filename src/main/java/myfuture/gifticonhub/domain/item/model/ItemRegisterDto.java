@@ -53,6 +53,6 @@ public class ItemRegisterDto {
 
 
     public Item toEntity(Member member, UploadFile uploadFile) {
-        return new Item(member, itemName, brandName, LocalDate.now(), expirationDate, price, itemCategory, ItemStatus.Available, serialNumber, uploadFile);
+        return new Item(member, itemName, brandName, LocalDate.now(), expirationDate, price, itemCategory, serialNumber, uploadFile);
     }
 }

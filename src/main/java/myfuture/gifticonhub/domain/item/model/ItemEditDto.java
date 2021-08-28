@@ -58,6 +58,7 @@ public class ItemEditDto {
         item.setPrice(this.getPrice());
         item.setLastModified(LocalDateTime.now());
         item.setUploadFile(uploadFile);
+        item.updateStatus(LocalDate.now());
         return item;
     }
 
@@ -70,6 +71,7 @@ public class ItemEditDto {
         item.setSerialNumber(this.getSerialNumber());
         item.setPrice(this.getPrice());
         item.setLastModified(LocalDateTime.now());
+        item.updateStatus(LocalDate.now());
         return item;
     }
 }

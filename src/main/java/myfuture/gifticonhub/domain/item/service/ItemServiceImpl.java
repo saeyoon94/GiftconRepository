@@ -67,7 +67,7 @@ public class ItemServiceImpl implements ItemService{
 
         return item.get();
     }
-
+/**
     @Override
     public List<Item> updateItemStatus(List<Item> items, LocalDate now) {
         List<Item> resultItems = new ArrayList<>();
@@ -87,12 +87,24 @@ public class ItemServiceImpl implements ItemService{
         }
         return resultItems;
     }
-
-    public void setStatusIfNecessary(Item item, List<Item> items ,ItemStatus itemStatus) {
-        if (item.getItemStatus() != itemStatus) {
-            item.setItemStatus(itemStatus);
-            items.add(item);
+*/
+    @Override
+    public List<Item> updateItemStatus(List<Item> items, LocalDate now) {
+        List<Item> resultItems = new ArrayList<>();
+        for (Item item : items) {
+            boolean isUpdated = item.updateStatus(now);
+            if (isUpdated) {
+                resultItems.add(item);
+            }
         }
+        return resultItems;
+    }
+
+    @Override
+    public Item applyUsedStatus(Item item, Boolean isUsed) {
+        item.applyUsedStatus(isUsed);
+        Item mergedItem = itemRepository.rePersist(item);
+        return mergedItem;
     }
 
     @Override

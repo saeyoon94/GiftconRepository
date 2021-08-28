@@ -75,7 +75,7 @@ public class Item {
     private UploadFile uploadFile;
 
     public Item(Member member, String itemName, String brandName, LocalDate registeredDate,
-                LocalDate expirationDate, Long price, ItemCategory itemCategory, ItemStatus itemStatus,
+                LocalDate expirationDate, Long price, ItemCategory itemCategory,
                 String serialNumber, UploadFile uploadFile) {
         this.member = member;
         this.itemName = itemName;
@@ -84,8 +84,43 @@ public class Item {
         this.price = price;
         this.expirationDate = expirationDate;
         this.itemCategory = itemCategory;
-        this.itemStatus = itemStatus;
         this.serialNumber = serialNumber;
         this.uploadFile = uploadFile;
+
+        this.updateStatus(LocalDate.now());
+    }
+
+    //만기일 변경 시 아이템 상태변경
+    public boolean updateStatus(LocalDate now) {
+        if (this.getItemStatus() == ItemStatus.Already_Used) {
+            return false;
+        }
+        ItemStatus newItemStatus;
+        if (this.getExpirationDate().isAfter(now.plusDays(2))) {
+            newItemStatus = ItemStatus.Available;
+        } else if (this.getExpirationDate().isBefore(now)) {
+            newItemStatus = ItemStatus.Expired;
+        } else {
+            newItemStatus = ItemStatus.Impending;
+        }
+        return this.changeStatusIfNecessary(newItemStatus);
+    }
+
+    public boolean changeStatusIfNecessary(ItemStatus itemStatus) {
+        if (this.getItemStatus() != itemStatus) {
+            this.setItemStatus(itemStatus);
+            return true;
+        }
+        return false;
+    }
+
+    //아이템 사용여부 체크할 때 아이템 상태 변경
+    public void applyUsedStatus(Boolean isUsed) {
+        if (this.getItemStatus() != ItemStatus.Already_Used && isUsed) {
+            this.setItemStatus(ItemStatus.Already_Used);
+        } else if (this.getItemStatus() == ItemStatus.Already_Used && !isUsed) {
+            this.setItemStatus(null); //안그러면 updateStatus메소드 첫 분기에 걸려버림
+            this.updateStatus(LocalDate.now());
+        }
     }
 }

@@ -27,7 +27,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(new TempSessionInterceptor())
                 .order(3)
                 .addPathPatterns("/items")
-                .excludePathPatterns("/items/**/edit");
+                .excludePathPatterns("/items/{itemId}","/items/{itemId}/edit");
     }
 
     @Override

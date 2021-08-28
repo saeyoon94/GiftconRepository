@@ -31,6 +31,8 @@ public class ItemViewDto {
 
     private ItemStatus itemStatus;
 
+    private Boolean isUsed;
+
     @NumberFormat(pattern = "###,###")
     private Long price;
 
@@ -43,6 +45,7 @@ public class ItemViewDto {
         this.expirationDate = item.getExpirationDate();
         this.itemCategory = item.getItemCategory();
         this.itemStatus = item.getItemStatus();
+        this.isUsed = item.getItemStatus() == ItemStatus.Already_Used;
         this.price = item.getPrice();
         this.imageURI = item.getUploadFile().getStoredFileName();
     }
