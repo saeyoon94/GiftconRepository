@@ -6,9 +6,12 @@ import myfuture.gifticonhub.domain.item.model.Item;
 import myfuture.gifticonhub.domain.member.model.Member;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,7 +54,12 @@ public class JpaItemRepository implements ItemRepository{
 
     @Override
     public Item rePersist(Item item) {
-        Item mergedItem = em.merge(item);
-        return mergedItem;
+        //Item mergedItem = em.merge(item);
+        Query query = em.createQuery("UPDATE Item i SET i.itemStatus=:itemStatus WHERE i.id=:id");
+        int i = query
+                .setParameter("itemStatus", item.getItemStatus())
+                .setParameter("id", item.getId())
+                .executeUpdate();
+        return item;
     }
 }

@@ -41,8 +41,6 @@ public class ItemController {
     private ItemService itemService;
 
     /**
-     *  todo : 상품수정 view와 기능 구현하고 ItemSatus CSS 잘 작동하는지 확인.
-     *  excludepatterns 자세히 알아보기(/new에서 /*로 적용되어버리는거같음)
      *  현재 날짜와 만기일을 비교하여 자동으로 아이템상태 변환하는 로직 구현 -> 가능하면 캐시도 적용해보자.
      *  main페이지에서 전체 조회한 데이터는 ehcashe를 통해 저장해서 사용하다가 수정이나 등록이 발생한 경우
      *  캐시를 리셋하는 방식으로 할까 했는데... 너무 조회 빈도가 낮을 것 같아서 여기에는 사용 안하는걸로...
@@ -50,9 +48,7 @@ public class ItemController {
      *
      *  대신 아이템상태 변경하는건 스프링 배치로 구현해보자.
      *  MemberService도 단위테스트 작성
-     *  만기일 수정하면 상태도 갱신되도록 작성 + 사용완료 체크도 할 수 있게 수정
      *  view단 더 수정
-
      */
 
     @ModelAttribute("itemCategories")
@@ -141,6 +137,8 @@ public class ItemController {
      try3 : 이미 예전에 commit된 엔티티를 세션에 저장해 두었다가 꺼내 쓰는 것이므로 준영속 상태가 된 것임을 가정
      -> em.persist 호출 결과 detached entity passed to persist 에러 발생. 가정이 맞았음을 확신하고 em.merge로 해결
      -> 그러나 업데이트 쿼리만 나갈 수 있도록 최적화하기 위해 세션에 저장해두고 쓰는건데 em.merge시 update 전에 select쿼리가 나가고 있음.
+     try4 : em.merge시 준영속 상태의 entity가 DB에 있는 엔티티인지 여부를 확인하기위해 select쿼리가 먼저 나가게 되어있음
+     -> 이를 막기 위해 JPQL로 직접 update쿼리 날려서 해결
      */
     @PostMapping(value = "/{itemId}")
     public String checkIfUsed(@RequestParam(value = "isUsed", defaultValue = "false") Boolean isUsed, HttpServletRequest request,
