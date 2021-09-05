@@ -21,10 +21,10 @@ public class VisionServiceImpl implements VisionService {
     private final ResourceLoader resourceLoader;
 
     @Override
-    public String getTextDetection() {
-        Resource imageResource = resourceLoader.getResource("file:C:/Users/mutal/Desktop/project/GiftconRepository/src/main/resources/static/file/1/443724c1-d610-4850-9141-aeaf68429ab6.jpeg");
+    public String getTextDetection(String imageLocation) {
+        Resource imageResource = resourceLoader.getResource(imageLocation);
         AnnotateImageResponse response = this.cloudVisionTemplate.analyzeImage(
                 imageResource, Feature.Type.DOCUMENT_TEXT_DETECTION);
-        return response.getTextAnnotationsList().toString();
+        return response.getTextAnnotationsList().get(0).getDescription();
     }
 }
