@@ -1,0 +1,33 @@
+<config
+        xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+        xmlns='http://www.ehcache.org/v3'
+        xmlns:jsr107="http://www.ehcache.org/v3/jsr107"
+        xsi:schemaLocation="http://www.ehcache.org/v3 http://www.ehcache.org/schema/ehcache-core.xsd
+http://www.ehcache.org/v3/jsr107 http://www.ehcache.org/schema/ehcache-107-ext-3.0.xsd">
+    <service>
+        <jsr107:defaults enable-management="true" enable-statistics="true"/>
+    </service>
+    <!--여기부터 -->
+    <cache-template name="myDefaultTemplate">
+        <expiry>
+            <!--지금은 canClassify, classify에서 엘라스틱서치를 두번 호출하는 것을 막기 위함으로 1초면 충분한데 10초로 설정-->
+            <!--나중에 다른 서비스에서 캐시를 사용하는 경우가 생기면 그때 늘려서 적용하자.-->
+            <ttl unit="seconds">10</ttl>
+        </expiry>
+
+        <listeners>
+            <listener>
+                <class>myfuture.gifticonhub.global.cache.CacheEventLogger</class>
+                <event-firing-mode>ASYNCHRONOUS</event-firing-mode>
+                <event-ordering-mode>UNORDERED</event-ordering-mode>
+                <events-to-fire-on>CREATED</events-to-fire-on>
+                <events-to-fire-on>EXPIRED</events-to-fire-on>
+            </listener>
+        </listeners>
+
+        <heap>20</heap>
+    </cache-template>
+    <cache alias="esRepositoryCache" uses-template="myDefaultTemplate">
+    </cache>
+    <!--여기까지 사용자 환경설정 -->
+</config>

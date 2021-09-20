@@ -23,7 +23,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(new AuthenticationInterceptor())
                 .order(2)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/", "/images/**", "/join", "/login", "/logout", "/css/**", "/*.ico", "/error");
+                .excludePathPatterns("/", "/images/**", "/join", "/login", "/logout", "/css/**", "/*.ico", "/error", "/api/**", "/api");
         registry.addInterceptor(new TempSessionInterceptor())
                 .order(3)
                 .addPathPatterns("/items")
