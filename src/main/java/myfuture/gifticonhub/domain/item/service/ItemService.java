@@ -2,7 +2,9 @@ package myfuture.gifticonhub.domain.item.service;
 
 import myfuture.gifticonhub.domain.item.model.Item;
 import myfuture.gifticonhub.domain.item.model.ItemEditDto;
+import myfuture.gifticonhub.domain.item.model.ItemRegisterDto;
 import myfuture.gifticonhub.domain.item.model.ItemViewDto;
+import org.springframework.core.io.Resource;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -22,4 +24,6 @@ public interface ItemService {
     public Item applyUsedStatus(Item item, Boolean isUsed);
 
     public void init();
+
+    public ItemRegisterDto autoFillRegisterFormByImg(ItemRegisterDto itemRegisterDto);
 }

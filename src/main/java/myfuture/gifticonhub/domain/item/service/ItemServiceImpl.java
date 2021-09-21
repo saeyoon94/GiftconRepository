@@ -4,7 +4,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import myfuture.gifticonhub.domain.item.model.*;
 import myfuture.gifticonhub.domain.item.repository.ItemRepository;
+import myfuture.gifticonhub.domain.search.model.ClassVo;
+import myfuture.gifticonhub.domain.search.service.ClassifierService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -26,6 +29,10 @@ public class ItemServiceImpl implements ItemService{
     private final ItemRepository itemRepository;
     @Autowired
     private final FileService fileService;
+    @Autowired
+    private final VisionService visionService;
+    @Autowired
+    private final ClassifierService classifierService;
 
     @Override
     public Item register(Item item) {
@@ -116,5 +123,19 @@ public class ItemServiceImpl implements ItemService{
         List<Item> items = itemRepository.findAll();
         List<Item> resultItemList = this.updateItemStatus(items, LocalDate.now());
         log.info("ItemSatus Upadate Batch has completed. Updated={}", resultItemList.size());
+    }
+
+    @Override
+    public ItemRegisterDto autoFillRegisterFormByImg(ItemRegisterDto itemRegisterDto) {
+        Resource imageResource = itemRegisterDto.getAttachFile().getResource();
+        String[] textDetection = visionService.getTextDetection(imageResource);
+        for (String text : textDetection) {
+            ClassVo classVo = classifierService.classify(text);
+            if (classVo != null) {
+                classVo.autoFill(itemRegisterDto);
+            }
+        }
+
+        return itemRegisterDto;
     }
 }

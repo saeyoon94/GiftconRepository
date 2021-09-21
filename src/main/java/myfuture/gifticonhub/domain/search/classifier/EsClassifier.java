@@ -32,7 +32,7 @@ public class EsClassifier implements Classifier{
         //문제가 생길 것 같고... 스코프를 바꾸어 쓰기에는 ClassifierService도 스코프를 바꿔야하고 등록도 매번 다시 해야해서...
         //ehcache를 써볼까 -> 캐시를 사용하여 해결(repository에 걸어둠)
         TextClassification textClassification = textClassificationEsRepository.findFirstByText(text).get();
-        if (textClassification.getType() == "menu") {
+        if (textClassification.getType().equals("menu")) {
             return new ItemNameClassVo(text, textClassification.getCategory());
         } else {
             return new BrandNameClassVo(text, textClassification.getCategory());

@@ -4,6 +4,8 @@ import com.google.cloud.vision.v1.EntityAnnotation;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
@@ -19,7 +21,8 @@ class VisionServiceTest {
 
     @Test
     void ocr() throws UnsupportedEncodingException {
-        String textDetection = visionService.getTextDetection("file:C:/Users/mutal/Desktop/project/GiftconRepository/src/main/resources/static/file/1/443724c1-d610-4850-9141-aeaf68429ab6.jpeg");
+
+        String[] textDetection = visionService.getTextDetection("file:C:/Users/mutal/Desktop/project/GiftconRepository/src/main/resources/static/file/1/443724c1-d610-4850-9141-aeaf68429ab6.jpeg");
         System.out.println(textDetection);
 
 

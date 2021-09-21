@@ -18,8 +18,7 @@ public class ClassifierServiceTest {
     @Test
     void classifyTest() {
 
-        String textDetection = visionService.getTextDetection("file:C:/Users/mutal/Desktop/project/GiftconRepository/src/main/resources/static/file/1/443724c1-d610-4850-9141-aeaf68429ab6.jpeg");
-        String[] detections = textDetection.split("\n");
+        String[] detections = visionService.getTextDetection("file:C:/Users/mutal/Desktop/project/GiftconRepository/src/main/resources/static/file/1/443724c1-d610-4850-9141-aeaf68429ab6.jpeg");
         for (String detection : detections) {
             ClassVo classVo = classifierService.classify(detection);
             System.out.println("detection = " + detection);

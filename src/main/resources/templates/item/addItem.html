@@ -320,6 +320,7 @@
                                             </style>
                                             <input type="file" th:field="*{attachFile}" class="css-1pfv6fx"/>
                                             <p class="field-error" th:errors="*{attachFile}">사진 오류</p>
+                                            <input type="submit" value="채우기", onclick="return auto_fill(this.form);">
                                         </div>
                                 </div>
                                 <style data-emotion-css="nzjuuy">
@@ -330,11 +331,17 @@
                             </div>
                         </div>
                             <input type="submit" value="저장">
-
-
-
-
                             /* */
+
+                            <script>
+                            function auto_fill(frm) {
+                                frm.action='http://localhost:8080/items/new/autofill';
+                                frm.submit();
+                                return true;
+                            }
+                            </script>
+
+
 
                             <div class="css-1tqyst1"><label required="" class="css-t1cgvl">휴대폰 번호</label>
                             <style data-emotion-css="1knbux5">

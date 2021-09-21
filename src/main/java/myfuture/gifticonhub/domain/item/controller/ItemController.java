@@ -45,10 +45,13 @@ public class ItemController {
      *  main페이지에서 전체 조회한 데이터는 ehcashe를 통해 저장해서 사용하다가 수정이나 등록이 발생한 경우
      *  캐시를 리셋하는 방식으로 할까 했는데... 너무 조회 빈도가 낮을 것 같아서 여기에는 사용 안하는걸로...
      *  앞으로 검색 기능등이 개발되면 고려해보자.
+     *  -> 검색 기능 개발해서 캐시도 사용중
      *
      *  대신 아이템상태 변경하는건 스프링 배치로 구현해보자.
      *  MemberService도 단위테스트 작성
      *  view단 더 수정
+     *  현재 기프티콘 등록 페이지로 리다이렉트될 때 다른 필드의 값은 폼에 채워지지만 파일은 없어지는 현상이 발생중
+     *  ItemRegisterDto에서 그룹으로 날짜부분 나눠야할지 고민 필요.(혹은 또 다른 DTO를?)
      */
 
     @ModelAttribute("itemCategories")
@@ -67,8 +70,11 @@ public class ItemController {
 
     //기프티콘 등록 폼
     @GetMapping(value = "/new")
-    public String addItemForm(Model model) {
-        model.addAttribute("itemRegisterDto", new ItemRegisterDto());
+    public String addItemForm(Model model, @ModelAttribute ItemRegisterDto itemRegisterDto) {
+        log.info("itemRegisterDto={}", itemRegisterDto);
+        if (itemRegisterDto == null) {
+            model.addAttribute("itemRegisterDto", new ItemRegisterDto());
+        }
         return "item/addItem";
     }
 
@@ -198,5 +204,17 @@ public class ItemController {
         redirectAttributes.addFlashAttribute("item", item);
         return "redirect:/items/{itemId}";
 
+    }
+
+    //아이템 등록 시 자동 채우기
+    @PostMapping(value = "/new/autofill")
+    public String autoFill(@Validated @ModelAttribute ItemRegisterDto itemRegisterDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            return "item/addItem";
+        }
+
+        ItemRegisterDto autoFilledItemRegisterDto = itemService.autoFillRegisterFormByImg(itemRegisterDto);
+        redirectAttributes.addFlashAttribute("itemRegisterDto", autoFilledItemRegisterDto);
+        return "redirect:/items/new";
     }
 }
