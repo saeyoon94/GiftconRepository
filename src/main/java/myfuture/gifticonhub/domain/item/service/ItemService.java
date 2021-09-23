@@ -1,10 +1,8 @@
 package myfuture.gifticonhub.domain.item.service;
 
-import myfuture.gifticonhub.domain.item.model.Item;
-import myfuture.gifticonhub.domain.item.model.ItemEditDto;
-import myfuture.gifticonhub.domain.item.model.ItemRegisterDto;
-import myfuture.gifticonhub.domain.item.model.ItemViewDto;
+import myfuture.gifticonhub.domain.item.model.*;
 import org.springframework.core.io.Resource;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -25,5 +23,5 @@ public interface ItemService {
 
     public void init();
 
-    public ItemRegisterDto autoFillRegisterFormByImg(ItemRegisterDto itemRegisterDto);
+    public ItemRegisterDto autoFillRegisterFormByImg(ItemRegisterDto itemRegisterDto, MultipartFile multipartFile);
 }

@@ -9,6 +9,7 @@ import myfuture.gifticonhub.domain.search.service.ClassifierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
@@ -126,8 +127,8 @@ public class ItemServiceImpl implements ItemService{
     }
 
     @Override
-    public ItemRegisterDto autoFillRegisterFormByImg(ItemRegisterDto itemRegisterDto) {
-        Resource imageResource = itemRegisterDto.getAttachFile().getResource();
+    public ItemRegisterDto autoFillRegisterFormByImg(ItemRegisterDto itemRegisterDto, MultipartFile multipartFile) {
+        Resource imageResource = multipartFile.getResource();
         String[] textDetection = visionService.getTextDetection(imageResource);
         for (String text : textDetection) {
             ClassVo classVo = classifierService.classify(text);

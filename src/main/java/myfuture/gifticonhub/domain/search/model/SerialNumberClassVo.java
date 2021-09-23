@@ -13,8 +13,7 @@ public class SerialNumberClassVo extends ClassVo {
 
     @Override
     public void autoFill(ItemRegisterDto itemRegisterDto) {
-        if (itemRegisterDto.getSerialNumber().isBlank()) {
-            itemRegisterDto.setSerialNumber(this.getSerialNumber());
-        }
+        itemRegisterDto.setSerialNumber(this.getSerialNumber());
+
     }
 }

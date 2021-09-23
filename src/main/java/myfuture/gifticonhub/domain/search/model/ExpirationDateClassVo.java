@@ -15,8 +15,8 @@ public class ExpirationDateClassVo extends ClassVo {
 
     @Override
     public void autoFill(ItemRegisterDto itemRegisterDto) {
-        if (itemRegisterDto.getExpirationDate() == null) {
-            itemRegisterDto.setExpirationDate(this.getExpirationDate());
-        }
+
+        itemRegisterDto.setExpirationDate(this.getExpirationDate());
+
     }
 }

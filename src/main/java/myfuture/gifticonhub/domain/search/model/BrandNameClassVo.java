@@ -15,12 +15,7 @@ public class BrandNameClassVo extends ClassVo {
 
     @Override
     public void autoFill(ItemRegisterDto itemRegisterDto) {
-        if (itemRegisterDto.getBrandName().isBlank()) {
-            itemRegisterDto.setBrandName(this.getBrandName());
-        }
-
-        if (itemRegisterDto.getItemCategory() == null) {
-            itemRegisterDto.setItemCategory(this.getItemCategory());
-        }
+        itemRegisterDto.setBrandName(this.getBrandName());
+        itemRegisterDto.setItemCategory(this.getItemCategory());
     }
 }

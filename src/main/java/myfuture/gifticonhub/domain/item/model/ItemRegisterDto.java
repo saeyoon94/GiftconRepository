@@ -22,7 +22,7 @@ public class ItemRegisterDto {
 
     private String brandName;
 
-    @NotNull
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     //날짜가 String으로 오기 때문에 이걸 붙여야 LocalDate 등으로 변경 가능하다.
     //mm이 아니라 MM 주의 -> mm은 분을 의미한다.
@@ -34,9 +34,7 @@ public class ItemRegisterDto {
 
     private Long price;
 
-    @NotNull
-    private MultipartFile attachFile;
-
+    private UploadFile uploadFile;
     /*
     private String imageURI;
 
@@ -52,7 +50,7 @@ public class ItemRegisterDto {
     */
 
 
-    public Item toEntity(Member member, UploadFile uploadFile) {
+    public Item toEntity(Member member) {
         return new Item(member, itemName, brandName, LocalDate.now(), expirationDate, price, itemCategory, serialNumber, uploadFile);
     }
 }

@@ -10,6 +10,8 @@ import myfuture.gifticonhub.domain.member.service.MemberService;
 import myfuture.gifticonhub.global.session.Login;
 import myfuture.gifticonhub.global.session.SessionConst;
 import myfuture.gifticonhub.global.session.SessionDto;
+import org.apache.tomcat.util.http.fileupload.FileItem;
+import org.apache.tomcat.util.http.fileupload.disk.DiskFileItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -19,6 +21,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -51,7 +55,13 @@ public class ItemController {
      *  MemberService도 단위테스트 작성
      *  view단 더 수정
      *  현재 기프티콘 등록 페이지로 리다이렉트될 때 다른 필드의 값은 폼에 채워지지만 파일은 없어지는 현상이 발생중
-     *  ItemRegisterDto에서 그룹으로 날짜부분 나눠야할지 고민 필요.(혹은 또 다른 DTO를?)
+     *  -> 이미지 등록과 나머지 화면을 분리하여 해결. 그런데 itemRegisterDto의 uploadFile필드가 post요청시 안 넘어오는걸 확인.
+     *  -> 찾아본 결과 html의 input value에는 문자열로 나타낼 수 있는 데이터만 전송할 수 있었기에 이 객체의 값이
+     *  -> 백엔드로 다시 돌아오지 않아 null이 된 것임. 이를 해결하기 위해 프론트에서 작업을 할 수도 있었지만,
+     *  -> 커스텀 포메터를 적용하여 view로 넘어갈 때 객체를 문자열로 바꾸었다가 다시 서버로 넘어올 때 객체로 전환되도록 하여 해결.
+     *
+     *  기타 정리할 것 : addFlashAttribute, MultiparfFile 저장하면 달라져서 못 읽는거, 객체 받았을 때 인풋으로 multipartFile이
+     *  없어지는 현상
      */
 
     @ModelAttribute("itemCategories")
@@ -68,20 +78,56 @@ public class ItemController {
         return "item/main";
     }
 
-    //기프티콘 등록 폼
+    //기프티콘 이미지 등록 폼
     @GetMapping(value = "/new")
-    public String addItemForm(Model model, @ModelAttribute ItemRegisterDto itemRegisterDto) {
+    public String addItemImageForm(Model model, @ModelAttribute FileDto fileDto) {
+        if (fileDto == null) {
+            model.addAttribute("fileDto", new FileDto());
+        }
+        return "item/addImage";
+    }
+
+    //기프티콘 이미지 등록
+    @PostMapping(value = "/new")
+    public String addItemImage(Model model, @Validated @ModelAttribute FileDto fileDto, BindingResult bindingResult,
+                                @Login SessionDto loginSession, RedirectAttributes redirectAttributes) throws IOException {
+        if (fileDto.getAttachFile().isEmpty()) {
+            bindingResult.rejectValue("attachFile", "NotEmptyFile");
+        }
+
+        if (bindingResult.hasErrors()) {
+            log.info("bindingResult={}",bindingResult);
+            return "item/addImage";
+        }
+        MultipartFile attachFile = fileDto.getAttachFile();
+        log.info("Uploaded FileName = {}", attachFile.getOriginalFilename());
+
+        ItemRegisterDto autoFilledItemRegisterDto = itemService.autoFillRegisterFormByImg(new ItemRegisterDto(), attachFile);
+
+        UploadFile uploadFile = fileService.storeFile(attachFile, loginSession.getId());
+        log.info("Uploaded FileName = {}", attachFile.getOriginalFilename());
+        redirectAttributes.addFlashAttribute("itemRegisterDto", autoFilledItemRegisterDto);
+        redirectAttributes.addFlashAttribute(uploadFile);
+        return "redirect:/items/new/additionalInfo";
+    }
+
+    //기프티콘 등록 폼
+    @GetMapping(value = "/new/additionalInfo")
+    public String addItemForm(Model model, @ModelAttribute ItemRegisterDto itemRegisterDto,
+                              @ModelAttribute UploadFile uploadFile, HttpServletRequest request) {
+        itemRegisterDto.setUploadFile(uploadFile);
         log.info("itemRegisterDto={}", itemRegisterDto);
         if (itemRegisterDto == null) {
             model.addAttribute("itemRegisterDto", new ItemRegisterDto());
         }
+
         return "item/addItem";
     }
 
     //기프티콘 등록 처리
-    @PostMapping(value = "/new")
+    @PostMapping(value = "/new/additionalInfo")
     public String addItem(@Validated @ModelAttribute ItemRegisterDto itemRegisterDto, BindingResult bindingResult,
-                          @Login SessionDto loginSession) throws IOException {
+                          @Login SessionDto loginSession) {
         log.info("itemRegisterDto ={}", itemRegisterDto);
         if (loginSession == null) {
             return "redirect:/login";
@@ -90,9 +136,11 @@ public class ItemController {
         if (bindingResult.hasErrors()) {
             return "item/addItem";
         }
-        UploadFile uploadFile = fileService.storeFile(itemRegisterDto.getAttachFile(), loginSession.getId());
+
         Optional<Member> member = memberService.findOne(loginSession.getId());
-        Item item = itemRegisterDto.toEntity(member.get(), uploadFile);
+
+        Item item = itemRegisterDto.toEntity(member.get());
+        log.info("item={}", item);
         Item registerdItem = itemService.register(item);
         return "redirect:/items";
     }
@@ -205,7 +253,7 @@ public class ItemController {
         return "redirect:/items/{itemId}";
 
     }
-
+/**
     //아이템 등록 시 자동 채우기
     @PostMapping(value = "/new/autofill")
     public String autoFill(@Validated @ModelAttribute ItemRegisterDto itemRegisterDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
@@ -217,4 +265,5 @@ public class ItemController {
         redirectAttributes.addFlashAttribute("itemRegisterDto", autoFilledItemRegisterDto);
         return "redirect:/items/new";
     }
+    */
 }
