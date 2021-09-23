@@ -62,6 +62,8 @@ public class ItemController {
      *
      *  기타 정리할 것 : addFlashAttribute, MultiparfFile 저장하면 달라져서 못 읽는거, 객체 받았을 때 인풋으로 multipartFile이
      *  없어지는 현상
+     *
+     *  view단 수정했는데 submit 버튼 눌러도 post요청이 가지 않는 문제 발생
      */
 
     @ModelAttribute("itemCategories")
