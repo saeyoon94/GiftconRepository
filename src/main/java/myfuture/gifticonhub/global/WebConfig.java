@@ -3,7 +3,8 @@ package myfuture.gifticonhub.global;
 import myfuture.gifticonhub.global.formatter.uploadFileFormatter;
 import myfuture.gifticonhub.global.interceptor.AuthenticationInterceptor;
 import myfuture.gifticonhub.global.interceptor.LogInterceptor;
-import myfuture.gifticonhub.global.interceptor.TempSessionInterceptor;
+import myfuture.gifticonhub.global.interceptor.TempAllItemsCacheSessionInterceptor;
+import myfuture.gifticonhub.global.interceptor.TempItemCacheSessionInterceptor;
 import myfuture.gifticonhub.global.session.LoginMemberArgumentResolver;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
@@ -25,11 +26,15 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(new AuthenticationInterceptor())
                 .order(2)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/", "/images/**", "/join", "/login", "/logout", "/css/**", "/*.ico", "/error", "/api/**", "/api");
-        registry.addInterceptor(new TempSessionInterceptor())
+                .excludePathPatterns("/", "/items/image/**", "/join", "/login", "/logout", "/css/**", "/*.ico", "/error", "/api/**", "/api");
+        registry.addInterceptor(new TempItemCacheSessionInterceptor())
                 .order(3)
                 .addPathPatterns("/items")
-                .excludePathPatterns("/items/{itemId}","/items/{itemId}/edit");
+                .excludePathPatterns("/", "/items/image/**", "/join", "/login", "/logout", "/css/**", "/*.ico", "/error", "/api/**", "/api","/items/{itemId}","/items/{itemId}/edit");
+        registry.addInterceptor(new TempAllItemsCacheSessionInterceptor())
+                .order(4)
+                .addPathPatterns("/items/**")
+                .excludePathPatterns("/", "/items/image/**", "/join", "/login", "/logout", "/css/**", "/*.ico", "/error", "/api/**", "/api","/items","/items?filter=*");
     }
 
     @Override

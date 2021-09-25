@@ -19,7 +19,24 @@
             <div class="ExhibitionDetailBody_container__3bk3I">
                 <div></div>
                 <section class="ExhibitionDetailSortNav_container__1igfW">
-                    <div class="ExhibitionDetailSortNav_count__5JgAk"><strong>22</strong>개의 상품</div>
+                    <div class="ExhibitionDetailSortNav_count__5JgAk"><strong th:text="${itemViewDtos.size}">22</strong>개의 상품</div>
+                    <div style="float:right;margin-top:1%;position:relative;margin-right:2%;">
+                        <button class="BaseButton_button__tzyL8 RectButton_primary__3O9TH CTAButtonForCart_button__2vEv5"
+                                th:onclick="|location.href='/items?filter=all'|"
+                                th:styleappend="${(param.filter != null) and (not #strings.equals(param.filter, 'all'))} ? 'background:#E9A7A7;border:#E9A7A7;' : 'background:#de2e5f;border:#de2e5f;'">
+                            <span class="RectButton_label__WcAp7" style="font-size: 1.2rem;font-weight: bold;">전체</span>
+                        </button>
+                        <button class="BaseButton_button__tzyL8 RectButton_primary__3O9TH CTAButtonForCart_button__2vEv5"
+                                th:onclick="|location.href='/items?filter=available'|"
+                                th:styleappend="${(param.filter == null) or (not #strings.equals(param.filter, 'available'))} ? 'background:#E9A7A7;border:#E9A7A7;' : 'background:#de2e5f;border:#de2e5f;'">
+                            <span class="RectButton_label__WcAp7" style="font-size: 1.2rem;font-weight: bold;">사용가능</span>
+                        </button>
+                        <button class="BaseButton_button__tzyL8 RectButton_primary__3O9TH CTAButtonForCart_button__2vEv5"
+                                th:onclick="|location.href='/items?filter=used'|"
+                                th:styleappend="${(param.filter == null) or (not #strings.equals(param.filter, 'used'))} ? 'background:#E9A7A7;border:#E9A7A7;' : 'background:#de2e5f;border:#de2e5f;'">
+                            <span class="RectButton_label__WcAp7" style="font-size: 1.2rem;font-weight: bold;">사용완료</span>
+                        </button>
+                    </div>
                 </section>
                 <div style="position: relative;">
                     <div style="overflow:visible;width:0">

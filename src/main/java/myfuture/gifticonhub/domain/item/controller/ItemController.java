@@ -10,19 +10,15 @@ import myfuture.gifticonhub.domain.member.service.MemberService;
 import myfuture.gifticonhub.global.session.Login;
 import myfuture.gifticonhub.global.session.SessionConst;
 import myfuture.gifticonhub.global.session.SessionDto;
-import org.apache.tomcat.util.http.fileupload.FileItem;
-import org.apache.tomcat.util.http.fileupload.disk.DiskFileItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.format.Formatter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,6 +27,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @Slf4j
@@ -63,7 +60,7 @@ public class ItemController {
      *  기타 정리할 것 : addFlashAttribute, MultiparfFile 저장하면 달라져서 못 읽는거, 객체 받았을 때 인풋으로 multipartFile이
      *  없어지는 현상
      *
-     *  view단 수정했는데 submit 버튼 눌러도 post요청이 가지 않는 문제 발생
+     *
      */
 
     @ModelAttribute("itemCategories")
@@ -73,9 +70,35 @@ public class ItemController {
 
     //메인화면 view
     @GetMapping
-    public String item(Model model, @Login SessionDto loginSession) {
-        List<Item> items = itemService.findItems(loginSession.getId());
-        List<ItemViewDto> itemViewDtos = ItemViewDto.toItemViewDtos(items);
+    public String item(Model model, @Login SessionDto loginSession, HttpServletRequest request,
+                       @RequestParam(value = "filter", defaultValue = ItemFilterConst.ALL) String filter) {
+
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            log.info("main, session=null");
+            return "redirect:/login";
+        }
+        List<Item> items = (List<Item>) session.getAttribute(SessionConst.ALL_ITEMS);
+        if (items == null) {
+            log.info("Items from DB");
+            items = itemService.findItems(loginSession.getId());
+            session.setAttribute(SessionConst.ALL_ITEMS, items);
+        }
+
+        List<Item> filterdItems;
+        if (filter.equals(ItemFilterConst.AVAILABLE)) {
+            filterdItems = items.stream()
+                    .filter(i -> i.getItemStatus() == ItemStatus.Available || i.getItemStatus() == ItemStatus.Impending)
+                    .collect(Collectors.toList());
+        } else if (filter.equals(ItemFilterConst.ALREADY_USED)) {
+            filterdItems = items.stream()
+                    .filter(i -> i.getItemStatus() == ItemStatus.Already_Used || i.getItemStatus() == ItemStatus.Expired)
+                    .collect(Collectors.toList());
+        } else {
+            filterdItems = items;
+        }
+
+        List<ItemViewDto> itemViewDtos = ItemViewDto.toItemViewDtos(filterdItems);
         model.addAttribute("itemViewDtos", itemViewDtos);
         return "item/main";
     }

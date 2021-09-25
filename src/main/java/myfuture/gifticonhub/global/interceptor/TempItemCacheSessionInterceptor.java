@@ -16,13 +16,15 @@ import javax.servlet.http.HttpSession;
  * 다시 다른 컨트롤러가 호출되었을 때 세션에 저장된 값을 삭제하기 위한 인터셉터.
  */
 @Slf4j
-public class TempSessionInterceptor implements HandlerInterceptor {
+public class TempItemCacheSessionInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         HttpSession session = request.getSession(false);
         if (session != null) {
+            //item 객체
             log.info("Temp_Model = {}", session.getAttribute(SessionConst.TEMP_MODEL));
             session.removeAttribute(SessionConst.TEMP_MODEL);
+
         }
         return true;
     }
