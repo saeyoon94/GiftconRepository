@@ -62,4 +62,12 @@ public class JpaItemRepository implements ItemRepository{
                 .executeUpdate();
         return item;
     }
+
+    @Override
+    public void remove(Item item) {
+        Query query = em.createQuery("DELETE FROM Item i WHERE i.id=:id");
+        int i = query
+                .setParameter("id", item.getId())
+                .executeUpdate();
+    }
 }

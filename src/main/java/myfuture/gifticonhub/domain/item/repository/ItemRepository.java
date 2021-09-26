@@ -11,4 +11,5 @@ public interface ItemRepository {
     List<Item> findByMemberId(Long memberId);
     List<Item> findAll();
     Item rePersist(Item item);
+    void remove(Item item);
 }

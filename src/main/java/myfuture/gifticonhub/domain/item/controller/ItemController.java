@@ -237,6 +237,22 @@ public class ItemController {
         return "redirect:/items/{itemId}";
     }
 
+    //아이템 삭제
+    @PostMapping(value = "/delete/{itemId}")
+    public String deleteItem(@PathVariable Long itemId, @Login SessionDto loginSession, HttpServletRequest request) throws IllegalAccessException {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            log.info("isUsed? session=null!");
+        }
+        Item item = (Item) session.getAttribute(SessionConst.TEMP_MODEL);
+        if (item == null) {
+            throw new IllegalAccessException("No Item in Session!");
+        }
+
+        itemService.deleteItem(loginSession.getId(), item);
+        return "redirect:/items";
+    }
+
 
 
     //상세 아이템 수정 뷰

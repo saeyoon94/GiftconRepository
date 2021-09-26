@@ -24,4 +24,6 @@ public interface ItemService {
     public void init();
 
     public ItemRegisterDto autoFillRegisterFormByImg(ItemRegisterDto itemRegisterDto, MultipartFile multipartFile);
+
+    public void deleteItem(Long memberId, Item item) throws IllegalAccessException;
 }

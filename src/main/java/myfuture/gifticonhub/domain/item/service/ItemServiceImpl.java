@@ -139,4 +139,13 @@ public class ItemServiceImpl implements ItemService{
 
         return itemRegisterDto;
     }
+
+    @Override
+    public void deleteItem(Long memberId, Item item) throws IllegalAccessException {
+        if (item.getMember().getId() == memberId) {
+            itemRepository.remove(item);
+        } else {
+            throw new IllegalAccessException("The User has attemped to remove other's Item!");
+        }
+    }
 }

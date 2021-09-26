@@ -30,11 +30,13 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(new TempItemCacheSessionInterceptor())
                 .order(3)
                 .addPathPatterns("/items")
-                .excludePathPatterns("/", "/items/image/**", "/join", "/login", "/logout", "/css/**", "/*.ico", "/error", "/api/**", "/api","/items/{itemId}","/items/{itemId}/edit");
+                .excludePathPatterns("/", "/items/image/**", "/join", "/login", "/logout", "/css/**", "/*.ico", "/error", "/api/**", "/api",
+                        "/items/{itemId}","/items/{itemId}/edit", "/items/delete/{itemId}");
         registry.addInterceptor(new TempAllItemsCacheSessionInterceptor())
                 .order(4)
                 .addPathPatterns("/items/**")
-                .excludePathPatterns("/", "/items/image/**", "/join", "/login", "/logout", "/css/**", "/*.ico", "/error", "/api/**", "/api","/items","/items?filter=*");
+                .excludePathPatterns("/", "/items/image/**", "/join", "/login", "/logout", "/css/**", "/*.ico", "/error", "/api/**", "/api",
+                        "/items","/items?filter=*");
     }
 
     @Override
