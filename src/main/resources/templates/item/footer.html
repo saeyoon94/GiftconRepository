@@ -8,10 +8,12 @@
 <footer th:fragment="banner (param1, param2)">
   <section class="sunny-nav SunnyNav_container__18unQ">
     <section class="SmartBanner_container__3Zp0y">
-      <button class="SmartBanner_close__1j2sZ"><i></i></button>
-      <section class="DeepLinkBanner_container__3oHeE"><img class="DeepLinkBanner_image__2nMUl"
-                                                            th:src="@{/images/icon.png}">
-        <button class="DeepLinkBanner_action__2Y1Lt"><span>앱에서 보기</span><i></i></button>
+      <!-- <button class="SmartBanner_close__1j2sZ"><i></i></button> -->
+      <section class="DeepLinkBanner_container__3oHeE">
+        <a th:href="@{/}">
+          <img class="DeepLinkBanner_image__2nMUl" th:src="@{/images/icon.png}">
+        </a>
+        <!-- <button class="DeepLinkBanner_action__2Y1Lt"><span>앱에서 보기</span><i></i></button> -->
       </section>
     </section>
     <nav class="NavigationBar_container__1EfAG">

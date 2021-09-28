@@ -17,12 +17,14 @@ public class LoginServiceImpl implements LoginService{
 
     @Autowired
     private final MemberRepository memberRepository;
+    @Autowired
+    private final EncryptionService encryptionService;
 
 
     @Override
     public Optional<Member> login(LoginDto loginDto) {
         Optional<Member> member = memberRepository.findByUserId(loginDto.getUserId())
-                .filter(m -> m.getPassword().equals(loginDto.getPassword()));
+                .filter(m -> m.getPassword().equals(encryptionService.hashing(loginDto.getPassword(), m.getSalt(), EncryptionService.NUMBUR_OF_ITERATIONS)));
         return member;
     }
 }

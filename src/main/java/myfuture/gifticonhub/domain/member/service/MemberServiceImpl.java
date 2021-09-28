@@ -10,18 +10,19 @@ import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Transactional
-//No EntityManager with actual transaction available for current thread - cannot reliably process 'persist' call
-//@Transactional을 안 붙이니 위와 같은 에러 발생. JPA가 트랜잭션 단위로 동작해서 그런 것 같은데, 리포지토리가 아니라 서비스 계층에
-//하는게 맞는건지, 자세한 메커니즘은 어떻게 되는지 학습 필요
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService{
 
     @Autowired
     private final MemberRepository memberRepository;
+    @Autowired
+    private final EncryptionService encryptionService;
 
     @Override
     public Member join(Member member) {
+        member.setSalt(encryptionService.getSalt());
+        member.setPassword(encryptionService.hashing(member.getPassword(), member.getSalt(), EncryptionService.NUMBUR_OF_ITERATIONS));
         Member savedMember = memberRepository.save(member);
         return savedMember;
     }

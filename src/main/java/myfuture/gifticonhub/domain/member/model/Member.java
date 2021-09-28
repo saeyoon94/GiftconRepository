@@ -28,8 +28,10 @@ public class Member {
     private Long id;
     @Column(nullable = false, length = 15)
     private String userId;
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 100)
     private String password;
+    @Column(nullable = false, length = 16)
+    private String salt;
     @Column(nullable = false, length = 5)
     private String userName;
     @Column(nullable = false)

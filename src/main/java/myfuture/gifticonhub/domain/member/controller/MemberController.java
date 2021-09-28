@@ -106,6 +106,20 @@ public class MemberController {
         return "redirect:/login";
     }
 
+    private void validateMember(MemberDto memberDto, BindingResult bindingResult) {
+        //패스워드와 확인용 패스워드가 다른 경우
+        if (memberDto.isNotMatchedPassword()) {
+            bindingResult.reject("unmatchedPassword");
+        }
+        //생년월일 검증
+        if (memberDto.validateDate() == MemberDto.DateValidationStatus.TOO_EARLY) {
+            bindingResult.reject("tooEarlyBirthDay");
+        } else if (memberDto.validateDate() == MemberDto.DateValidationStatus.FUTURE) {
+            bindingResult.reject("futureBirthDay");
+        }
+    }
+
+    /*
     @GetMapping(value = "/api")
     public void api(HttpServletResponse response) throws IOException {
 
@@ -139,7 +153,7 @@ public class MemberController {
 
     }
 
-/*
+
     private void chooseTheMostImportantError(BindingResult bindingResult) {
         List<ObjectError> allErrors = bindingResult.getAllErrors();
         for (ObjectError allError : allErrors) {
@@ -157,16 +171,4 @@ public class MemberController {
     }
 */
 
-    private void validateMember(MemberDto memberDto, BindingResult bindingResult) {
-        //패스워드와 확인용 패스워드가 다른 경우
-        if (memberDto.isNotMatchedPassword()) {
-            bindingResult.reject("unmatchedPassword");
-        }
-        //생년월일 검증
-        if (memberDto.validateDate() == MemberDto.DateValidationStatus.TOO_EARLY) {
-            bindingResult.reject("tooEarlyBirthDay");
-        } else if (memberDto.validateDate() == MemberDto.DateValidationStatus.FUTURE) {
-            bindingResult.reject("futureBirthDay");
-        }
-    }
 }

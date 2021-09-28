@@ -60,6 +60,14 @@ public class ItemController {
      *  기타 정리할 것 : addFlashAttribute, MultiparfFile 저장하면 달라져서 못 읽는거, 객체 받았을 때 인풋으로 multipartFile이
      *  없어지는 현상
      *
+     * 이미 가입된 아이디로 또 가입 못하게 막아야 한다(아이디 중복체크 필요)
+     * 멤버부분 validation 수정해야한다.
+     * 등록된 아이템이 없을 때 메인 페이지에서 아무것도 없다고 나타내기
+     * 에러페이지 등록
+     * message source 추가하기
+     * 선물하기 기능
+     * AWS
+     * SSL인증서
      *
      */
 
